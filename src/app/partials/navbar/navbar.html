@@ -1,1 +1,19 @@
-<p>navbar works!</p>
+<header>
+  <button type="button" class="burger" aria-label="Abrir menú" (click)="menuToggle.emit()">☰</button>
+  <div class="spacer"></div>
+  <div class="user">
+    <span class="name">{{ user().nombre }}</span>
+    <span class="badge">{{ roleLabel() }}</span>
+  </div>
+  <button type="button" class="btn btn-ghost" (click)="confirmOpen.set(true)">Cerrar sesión</button>
+</header>
+
+@if (confirmOpen()) {
+  <app-confirm-modal
+    title="Cerrar sesión"
+    message="¿Seguro que quieres salir?"
+    confirmLabel="Cerrar sesión"
+    (cancelled)="confirmOpen.set(false)"
+    (confirmed)="logout()" />
+}
+

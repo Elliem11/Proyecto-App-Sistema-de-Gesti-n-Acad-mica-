@@ -1,1 +1,125 @@
-<p>dashboard works!</p>
+<section class="hero">
+  <div class="hero__text">
+    <p class="eyebrow">Panel del alumno</p>
+    <h1>Hola, {{ user()?.nombre }}</h1>
+    <p class="muted">Resumen de tu cuenta</p>
+  </div>
+
+  <svg class="hero__art" viewBox="0 0 380 200" aria-hidden="true">
+    <circle class="ring r1" cx="190" cy="100" r="92"/>
+    <circle class="ring r2" cx="190" cy="100" r="62"/>
+
+    <!-- birrete -->
+    <g class="float">
+      <path d="M158 96v22c0 8 64 8 64 0V96" fill="#0c0c0e" opacity=".85"/>
+      <path d="M190 62 L250 84 L190 106 L130 84Z" fill="#0c0c0e"/>
+      <path d="M190 84 L240 86 V106" fill="none" stroke="#e4def0" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="240" cy="110" r="4.5" fill="#f4e3da"/>
+    </g>
+
+    <!-- tarjeta: gráfica -->
+    <g class="float b">
+      <rect x="252" y="22" width="110" height="64" rx="12" fill="#fbf9fd" opacity=".95"/>
+      <rect x="266" y="36" width="44" height="6" rx="3" fill="#0c0c0e" opacity=".75"/>
+      <rect x="266" y="48" width="28" height="5" rx="2.5" fill="#0c0c0e" opacity=".2"/>
+      <polyline class="draw" pathLength="100" points="266,78 282,68 298,72 316,56 332,60 346,44" fill="none" stroke="#0c0c0e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- tarjeta: asistencia -->
+    <g class="float c">
+      <rect x="18" y="122" width="100" height="52" rx="12" fill="#0c0c0e"/>
+      <circle cx="40" cy="148" r="9" fill="#dce7e1"/>
+      <path d="M35.5 148l3 3 5.5-6" fill="none" stroke="#0c0c0e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="57" y="142" width="46" height="6" rx="3" fill="#fbf9fd" opacity=".85"/>
+      <rect x="57" y="155" width="30" height="5" rx="2.5" fill="#fbf9fd" opacity=".35"/>
+    </g>
+
+    <!-- calificación -->
+    <g class="float">
+      <rect x="150" y="150" width="62" height="34" rx="10" fill="#f4e3da" stroke="#0c0c0e" stroke-opacity=".15"/>
+      <text x="181" y="174" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="18" font-weight="600" fill="#0c0c0e">9.3</text>
+    </g>
+
+    <!-- partículas -->
+    <circle class="dot" cx="40" cy="48" r="4" fill="#0c0c0e"/>
+    <circle class="dot" cx="130" cy="18" r="3" fill="#0c0c0e"/>
+    <circle class="dot" cx="360" cy="150" r="4" fill="#0c0c0e" opacity=".5"/>
+    <circle class="dot" cx="300" cy="186" r="3" fill="#0c0c0e" opacity=".5"/>
+  </svg>
+</section>
+
+<div class="stats">
+  @for (s of stats(); track s.label; let i = $index) {
+    <article class="stat" [attr.data-tone]="i">
+      <div class="stat__value">
+        <strong>{{ s.value }}</strong>
+        <span>{{ s.label }}</span>
+      </div>
+
+      <svg class="spark" viewBox="0 0 120 40" aria-hidden="true">
+        @switch (i) {
+          @case (0) {
+            <path pathLength="100" d="M4 30 L28 22 L48 26 L72 14 L96 18 L116 6"/>
+          }
+          @case (1) {
+            <path pathLength="100" d="M4 28 L30 30 L54 18 L78 22 L100 12 L116 14"/>
+          }
+          @default {
+            <path pathLength="100" d="M4 26 L26 20 L50 24 L74 16 L98 20 L116 10"/>
+          }
+        }
+      </svg>
+    </article>
+  }
+</div>
+
+<header class="section-head">
+  <h2>Accesos rápidos</h2>
+</header>
+
+<div class="links">
+  @for (item of shortcuts(); track item.route; let i = $index) {
+    <a class="link" [routerLink]="item.route" [attr.data-tone]="i">
+      <span class="link__icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          @switch (iconKey(item.route)) {
+            @case ('horario') {
+              <rect x="4" y="5" width="16" height="15" rx="3"/>
+              <path d="M4 10h16M9 3v4M15 3v4"/>
+            }
+            @case ('asistencias') {
+              <rect x="4" y="4" width="16" height="16" rx="4"/>
+              <path d="M8 12l3 3 5-6"/>
+            }
+            @case ('avisos') {
+              <path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/>
+              <path d="M10 20a2 2 0 0 0 4 0"/>
+            }
+            @case ('tareas') {
+              <rect x="6" y="4" width="12" height="16" rx="2"/>
+              <path d="M9 9h6M9 13h6M9 17h3"/>
+            }
+            @case ('calificaciones') {
+              <path d="M2 9l10-5 10 5-10 5z"/>
+              <path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/>
+            }
+            @case ('kardex') {
+              <path d="M12 3l9 5-9 5-9-5z"/>
+              <path d="M3 13l9 5 9-5"/>
+            }
+            @case ('perfil') {
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>
+            }
+            @default {
+              <circle cx="12" cy="12" r="8"/>
+              <path d="M12 8v4l2.5 2"/>
+            }
+          }
+        </svg>
+      </span>
+      <span class="link__label">{{ item.label }}</span>
+      <span class="link__arrow" aria-hidden="true">→</span>
+    </a>
+  }
+</div>

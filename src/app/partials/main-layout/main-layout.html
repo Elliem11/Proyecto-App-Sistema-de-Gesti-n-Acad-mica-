@@ -1,1 +1,11 @@
-<p>main-layout works!</p>
+@if (user(); as u) {
+  <div class="shell" [attr.data-role]="u.role">
+    <app-sidebar [class.open]="sidebarOpen()" [role]="u.role" [open]="sidebarOpen()" (navigated)="sidebarOpen.set(false)" />
+    @if (sidebarOpen()) { <div class="scrim" (click)="sidebarOpen.set(false)"></div> }
+    <div class="main">
+      <app-navbar [user]="u" (menuToggle)="sidebarOpen.set(!sidebarOpen())" />
+      <main><router-outlet /></main>
+      <app-footer [role]="u.role" />
+    </div>
+  </div>
+}

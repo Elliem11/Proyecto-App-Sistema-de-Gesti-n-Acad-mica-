@@ -1,0 +1,25 @@
+:host {
+  display: block;
+  margin-top: auto;
+}
+
+footer {
+  padding: 18px 28px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1024px) {
+  footer {
+    padding: 18px 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  footer {
+    padding: 16px;
+    font-size: 12px;
+  }
+}

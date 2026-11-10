@@ -1,0 +1,112 @@
+:host {
+  display: block;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 68px;
+  padding: 0 28px;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  box-sizing: border-box;
+}
+
+.burger {
+  display: none;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #f5f5fa;
+  }
+}
+
+.spacer {
+  flex: 1;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--muted);
+
+  .name {
+    white-space: nowrap;
+  }
+
+  .badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--ink);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.btn-ghost {
+  background: var(--ink);
+  color: #ffffff;
+
+  &:hover {
+    background: #2a2a36;
+  }
+}
+
+@media (max-width: 1023px) {
+  .burger {
+    display: grid;
+  }
+}
+
+@media (min-width: 1024px) {
+  header {
+    padding: 0 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  header {
+    padding: 0 16px;
+    height: 60px;
+  }
+
+  .user .name {
+    display: none;
+  }
+}

@@ -1,0 +1,126 @@
+:host {
+  --ink: #0c0c0e;
+  --lav: #e4def0;
+  --peach: #f4e3da;
+  --sky: #d3dcf2;
+  --sage: #dce7e1;
+  --txt: #f4f2f7;
+  --muted: #a9a6b4;
+  --line: rgba(255, 255, 255, 0.14);
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Instrument Sans', system-ui, sans-serif;
+
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  font-family: var(--sans);
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(12, 12, 14, 0.55);
+  backdrop-filter: blur(4px);
+  animation: fade-in 0.2s ease both;
+}
+
+.modal {
+  position: relative;
+  width: min(100%, 380px);
+  padding: 32px 28px 24px;
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  color: var(--txt);
+  background:
+    radial-gradient(70% 45% at 100% 0%, rgba(211, 220, 242, 0.18), transparent 70%),
+    radial-gradient(60% 40% at 0% 100%, rgba(244, 227, 218, 0.14), transparent 70%),
+    linear-gradient(160deg, #18181e, var(--ink) 65%);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  animation: enter 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+  h2 {
+    margin: 0 0 8px;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 1.15;
+  }
+
+  p {
+    margin: 0 0 26px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn {
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ink);
+  background: linear-gradient(120deg, var(--peach), var(--lav) 50%, var(--sky));
+  background-size: 200% 100%;
+  transition: background-position 0.5s, transform 0.15s, box-shadow 0.3s;
+  box-shadow: 0 10px 30px rgba(211, 220, 242, 0.15);
+
+  &:hover {
+    background-position: 100% 0;
+    box-shadow: 0 14px 36px rgba(211, 220, 242, 0.28);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--sky);
+    outline-offset: 3px;
+  }
+}
+
+.btn-ghost {
+  color: var(--txt);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  box-shadow: none;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes enter {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+}
+
+@media (max-width: 480px) {
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .modal {
+    animation: none;
+  }
+}

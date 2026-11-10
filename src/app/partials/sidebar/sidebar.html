@@ -1,1 +1,13 @@
-<p>sidebar works!</p>
+<aside [class.open]="open()">
+  <div class="brand">
+    <strong>Gestión Académica</strong>
+    <small>{{ info().tagline }}</small>
+  </div>
+  <nav>
+    @for (item of menu(); track item.route) {
+      <a [routerLink]="item.route" routerLinkActive="active" (click)="navigated.emit()">
+        <span class="icon" aria-hidden="true">{{ item.icon }}</span>{{ item.label }}
+      </a>
+    }
+  </nav>
+</aside>

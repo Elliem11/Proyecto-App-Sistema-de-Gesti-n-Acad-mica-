@@ -15,13 +15,18 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: '', pathMatch: 'full', canActivate: [homeRedirectGuard], children: [] },
-
+      // ───── ALUMNO ─────
       {
         path: 'alumno', canActivate: [roleGuard], data: { role: 'alumno' },
         children: [
           { path: 'inicio', loadComponent: dashboard },
+          { path: 'horario', loadComponent: () => import('./screens/alumno/horario/horario').then(m => m.AlumnoHorario) },
         ],
+
       },
+
+
+
       {
         path: 'profesor', canActivate: [roleGuard], data: { role: 'profesor' },
         children: [
