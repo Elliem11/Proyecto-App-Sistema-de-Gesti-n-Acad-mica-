@@ -1,36 +1,101 @@
-<div class="page">
-  <form class="card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+<section class="art" aria-hidden="false">
+  <div class="brand"><i></i>Gestión Académica</div>
+
+  <svg class="scene" viewBox="0 0 600 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <circle class="ring r1" cx="300" cy="360" r="250"/>
+    <circle class="ring r2" cx="300" cy="360" r="190"/>
+    <circle class="ring r1" cx="300" cy="360" r="130"/>
+
+    <!-- libro -->
+    <g class="float">
+      <ellipse cx="300" cy="500" rx="170" ry="16" fill="#0c0c0e" opacity=".12"/>
+      <path d="M300 410 C250 385 185 385 130 405 L130 485 C185 465 250 465 300 490Z" fill="#0c0c0e"/>
+      <path d="M300 400 C250 375 190 375 140 393 L140 470 C190 452 250 452 300 477Z" fill="#fbf9fd"/>
+      <path d="M160 410c40-10 85-8 125 8M160 428c40-10 85-8 125 8M160 446c40-10 85-8 125 8" fill="none" stroke="#0c0c0e" stroke-opacity=".25" stroke-width="3" stroke-linecap="round"/>
+      <path d="M300 410 C350 385 415 385 470 405 L470 485 C415 465 350 465 300 490Z" fill="#0c0c0e"/>
+      <g class="page-r"><path d="M300 400 C350 375 410 375 460 393 L460 470 C410 452 350 452 300 477Z" fill="#fbf9fd"/>
+      <path d="M320 408c40-10 85-8 125 8M320 426c40-10 85-8 125 8M320 444c40-10 85-8 125 8" fill="none" stroke="#0c0c0e" stroke-opacity=".25" stroke-width="3" stroke-linecap="round"/></g>
+    </g>
+
+    <!-- birrete -->
+    <g class="cap">
+      <path d="M240 300v38c0 14 120 14 120 0v-38" fill="#0c0c0e" opacity=".85"/>
+      <path d="M300 245 L405 285 L300 325 L195 285Z" fill="#0c0c0e"/>
+      <path d="M300 285 L395 290 V335" fill="none" stroke="#e4def0" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="395" cy="340" r="7" fill="#f4e3da"/>
+    </g>
+
+    <!-- tarjeta: gráfica de rendimiento -->
+    <g class="float b">
+      <rect x="400" y="130" width="150" height="104" rx="16" fill="#fbf9fd" opacity=".92"/>
+      <rect x="416" y="146" width="50" height="7" rx="3.5" fill="#0c0c0e" opacity=".75"/>
+      <rect x="416" y="160" width="32" height="6" rx="3" fill="#0c0c0e" opacity=".2"/>
+      <polyline class="draw" points="416,214 442,196 466,205 494,178 520,186 534,164" fill="none" stroke="#0c0c0e" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- tarjeta: asistencia -->
+    <g class="float c">
+      <rect x="50" y="190" width="140" height="74" rx="16" fill="#0c0c0e"/>
+      <circle cx="86" cy="227" r="14" fill="#dce7e1"/>
+      <path d="M79 227l5 5 9-10" fill="none" stroke="#0c0c0e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="110" y="215" width="56" height="7" rx="3.5" fill="#fbf9fd" opacity=".85"/>
+      <rect x="110" y="231" width="38" height="6" rx="3" fill="#fbf9fd" opacity=".35"/>
+    </g>
+
+    <!-- calificaciones -->
+    <g class="float">
+      <rect x="440" y="520" width="112" height="60" rx="14" fill="#f4e3da" stroke="#0c0c0e" stroke-opacity=".15"/>
+      <text x="496" y="560" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="30" font-weight="600" fill="#0c0c0e">9.5</text>
+    </g>
+
+    <!-- partículas -->
+    <circle class="dot" cx="90" cy="400" r="5" fill="#0c0c0e"/>
+    <circle class="dot" cx="520" cy="330" r="4" fill="#0c0c0e"/>
+    <circle class="dot" cx="150" cy="560" r="6" fill="#0c0c0e" opacity=".5"/>
+    <circle class="dot" cx="300" cy="100" r="4" fill="#0c0c0e"/>
+    <circle class="dot" cx="560" cy="470" r="5" fill="#0c0c0e" opacity=".5"/>
+  </svg>
+
+  <div>
+    <h2>Toda la vida académica, en un solo lugar.</h2>
+    <p>Alumnos, calificaciones y asistencia al alcance de tu cuenta.</p>
+  </div>
+</section>
+
+<main class="panel">
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
     <h1>Iniciar sesión</h1>
-    <p class="muted">Gestión Académica</p>
+    <p class="sub">Ingresa con tu cuenta institucional.</p>
 
-    <label for="email">Correo</label>
-    <input id="email" type="email" formControlName="email" autocomplete="username" />
-    @if (invalid('email')) {
-      <small class="error">
-        {{ form.controls.email.hasError('required') ? 'Escribe tu correo.' : 'El correo no es válido.' }}
-      </small>
+    <div class="field">
+      <label for="email">Correo</label>
+      <input id="email" type="email" formControlName="email" autocomplete="username" placeholder="nombre@escuela.edu">
+      @if (invalid('email')) {
+        <small class="err">Escribe un correo válido.</small>
+      }
+    </div>
+    <div class="field">
+      <label for="password">Contraseña</label>
+      <input id="password" type="password" formControlName="password" autocomplete="current-password" placeholder="••••••••">
+      @if (invalid('password')) {
+        <small class="err">Escribe tu contraseña.</small>
+      }
+    </div>
+
+    @if (error()) {
+      <p class="alert" role="alert">{{ error() }}</p>
     }
 
-    <label for="password">Contraseña</label>
-    <input id="password" type="password" formControlName="password" autocomplete="current-password" />
-    @if (invalid('password')) {
-      <small class="error">
-        {{ form.controls.password.hasError('required') ? 'Escribe tu contraseña.' : 'Mínimo 8 caracteres.' }}
-      </small>
-    }
-
-    @if (error()) { <div class="alert">{{ error() }}</div> }
-
-    <button class="btn" type="submit">Entrar</button>
-    <a routerLink="/recuperar-contrasena">Recuperar contraseña</a>
+    <button class="go" type="submit">Entrar</button>
+    <a class="forgot" href="#" (click)="$event.preventDefault()">Recuperar contraseña</a>
 
     <details>
       <summary>Cuentas de prueba</summary>
       <ul>
-        <li>admin&#64;escuela.mx / Admin123</li>
-        <li>profesor&#64;escuela.mx / Profe123</li>
-        <li>alumno&#64;escuela.mx / Alumno123</li>
+        <li><span>Administrador</span><b>admin&#64;escuela.mx / Admin123  </b></li>
+        <li><span>Docente</span><b>profesor&#64;escuela.mx / Profe123</b></li>
+        <li><span>Alumno</span><b>alumno&#64;escuela.mx / Alumno123</b></li>
       </ul>
     </details>
   </form>
-</div>
+</main>
