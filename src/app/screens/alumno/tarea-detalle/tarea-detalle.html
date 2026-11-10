@@ -1,0 +1,16 @@
+<a class="back" routerLink="/alumno/tareas">← Volver</a>
+
+@if (tarea(); as t) {
+  <div class="card">
+    <h1>{{ t.titulo }}</h1>
+    <p class="muted">{{ t.materia }} · Vence el {{ t.vence }}</p>
+    <p>{{ t.descripcion }}</p>
+    <p><span class="estado">{{ t.estado }}</span></p>
+
+    @if (t.estado === 'Pendiente') {
+      <a class="btn" [routerLink]="['/alumno/tareas', id(), 'entrega']">Entregar tarea</a>
+    }
+  </div>
+} @else {
+  <div class="empty">No encontramos esta tarea. Vuelve a la lista y elige otra.</div>
+}

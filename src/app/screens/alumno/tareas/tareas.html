@@ -1,0 +1,28 @@
+<div class="head">
+  <div>
+    <h1>Mis tareas</h1>
+    <p class="muted">Pendientes y entregadas</p>
+  </div>
+</div>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        @for (c of columns; track c) {
+          <th>{{ c }}</th>
+        }
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows; track $index) {
+        <tr>
+          @for (cell of row; track $index) {
+            <td>{{ cell }}</td>
+          }
+          <td><a class="link" [routerLink]="['/alumno/tareas', row[0]]">Ver detalle</a></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

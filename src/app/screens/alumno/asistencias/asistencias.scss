@@ -1,0 +1,267 @@
+:host {
+  --ink: #0c0c0e;
+  --lav: #e4def0;
+  --peach: #f4e3da;
+  --sage: #dce7e1;
+  --sky: #d3dcf2;
+  --paper: #fbf9fd;
+  --line: #e0dfea;
+  --muted: #6b6b7b;
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Instrument Sans', system-ui, sans-serif;
+
+  display: block;
+  font-family: var(--sans);
+  color: var(--ink);
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+.muted {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+// Regresar
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    color: var(--ink);
+  }
+}
+
+// Encabezado tipo hero
+.head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  padding: 28px 32px;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 55% at 15% 10%, var(--peach), transparent 70%),
+    radial-gradient(55% 60% at 90% 25%, var(--sky), transparent 70%),
+    radial-gradient(60% 60% at 40% 110%, var(--sage), transparent 70%),
+    var(--lav);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+
+  &__text {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__badge {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: var(--ink);
+    box-shadow: 0 16px 40px rgba(12, 12, 14, 0.25);
+
+    svg {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  }
+}
+
+// Resumen
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 22px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+
+    strong {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 36px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    span {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    &[data-tone='0'] {
+      border-color: transparent;
+      background:
+        radial-gradient(70% 60% at 100% 0%, rgba(211, 220, 242, 0.22), transparent 70%),
+        linear-gradient(160deg, #1a1a20, var(--ink) 65%);
+
+      strong { color: #ffffff; }
+      span { color: rgba(255, 255, 255, 0.7); }
+    }
+
+    &[data-tone='1'] {
+      background: linear-gradient(135deg, #e7ebf8 0%, var(--sky) 100%);
+    }
+
+    &[data-tone='2'] {
+      background: linear-gradient(135deg, #eef4ef 0%, var(--sage) 100%);
+    }
+  }
+}
+
+// Tabla
+.table-wrap {
+  overflow-x: auto;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 14px 34px rgba(12, 12, 14, 0.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+th {
+  background: var(--lav);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+tbody tr:hover td {
+  background: rgba(228, 222, 240, 0.25);
+}
+
+.subject {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.date {
+  white-space: nowrap;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+// Estados de asistencia
+.status {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: var(--lav);
+  color: var(--ink);
+
+  &[data-estado='asistio'],
+  &[data-estado='presente'] {
+    background: var(--sage);
+  }
+
+  &[data-estado='falta'] {
+    background: var(--peach);
+  }
+
+  &[data-estado='retardo'] {
+    background: var(--sky);
+  }
+
+  &[data-estado='justificada'] {
+    background: var(--lav);
+  }
+}
+
+@media (max-width: 640px) {
+  .head {
+    padding: 22px 20px;
+  }
+
+  .head__badge {
+    display: none;
+  }
+
+  .summary {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  th,
+  td {
+    padding: 0.65rem 0.75rem;
+  }
+}

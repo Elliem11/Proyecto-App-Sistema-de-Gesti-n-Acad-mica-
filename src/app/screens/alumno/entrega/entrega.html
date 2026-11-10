@@ -1,0 +1,28 @@
+<div class="head">
+  <div>
+    <a class="back" routerLink="/alumno/tareas">← Volver</a>
+    <h1>Entrega de tarea</h1>
+    <p class="muted">Adjunta tu archivo y agrega un comentario</p>
+  </div>
+</div>
+<form class="card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <label for="comentarios">Comentarios</label>
+  <textarea id="comentarios" rows="4" formControlName="comentarios"></textarea>
+  @if (invalid('comentarios')) {
+    <small class="error">Escribe al menos 10 caracteres.</small>
+  }
+  <label for="archivo">Archivo</label>
+  <input id="archivo" type="file" (change)="onFile($event)" />
+  @if (invalid('archivo')) {
+    <small class="error">Adjunta el archivo de tu tarea.</small>
+  }
+
+  @if (sent()) {
+    <div class="alert ok">Entrega enviada. Tu profesor la recibirá.</div>
+  }
+
+  <div class="actions">
+    <button class="btn" type="submit">Enviar entrega</button>
+    <a class="btn btn-ghost" routerLink="/alumno/tareas">Cancelar</a>
+  </div>
+</form>

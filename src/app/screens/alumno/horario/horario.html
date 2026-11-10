@@ -1,1 +1,26 @@
-<p>horario works!</p>
+<div class="head">
+  <div>
+    <h1>Mi horario</h1>
+    <p class="muted">Clases de la semana</p>
+  </div>
+</div>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        @for (c of columns; track c) {
+          <th>{{ c }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows; track $index) {
+        <tr>
+          @for (cell of row; track $index) {
+            <td>{{ cell }}</td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

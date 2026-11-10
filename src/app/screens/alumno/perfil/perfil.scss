@@ -1,0 +1,168 @@
+:host {
+  --ink: #0c0c0e;
+  --lav: #e4def0;
+  --peach: #f4e3da;
+  --sage: #dce7e1;
+  --sky: #d3dcf2;
+  --paper: #fbf9fd;
+  --line: #e0dfea;
+  --muted: #6b6b7b;
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Instrument Sans', system-ui, sans-serif;
+
+  display: block;
+  font-family: var(--sans);
+  color: var(--ink);
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+.muted {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+// Encabezado tipo hero
+.head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  padding: 28px 32px;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 55% at 15% 10%, var(--peach), transparent 70%),
+    radial-gradient(55% 60% at 90% 25%, var(--sky), transparent 70%),
+    radial-gradient(60% 60% at 40% 110%, var(--sage), transparent 70%),
+    var(--lav);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+}
+
+// Tarjeta del formulario
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 32px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  box-shadow: 0 14px 34px rgba(12, 12, 14, 0.05);
+
+  label {
+    margin: 14px 0 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  input {
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #ffffff;
+    color: var(--ink);
+    font: inherit;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: var(--sky);
+      box-shadow: 0 0 0 4px rgba(211, 220, 242, 0.5);
+    }
+
+    &.ng-invalid.ng-touched {
+      border-color: #d98a84;
+    }
+  }
+}
+
+.error {
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: #b4473f;
+}
+
+// Alertas
+.alert {
+  margin: 20px 0 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+
+  &.ok {
+    background: var(--sage);
+    color: var(--ink);
+  }
+}
+
+// Botones
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ink);
+  background: linear-gradient(120deg, var(--peach), var(--lav) 50%, var(--sky));
+  background-size: 200% 100%;
+  transition: background-position 0.5s, transform 0.15s, box-shadow 0.3s;
+  box-shadow: 0 10px 30px rgba(211, 220, 242, 0.15);
+
+  &:hover {
+    background-position: 100% 0;
+    box-shadow: 0 14px 36px rgba(211, 220, 242, 0.28);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--sky);
+    outline-offset: 3px;
+  }
+}
+
+@media (max-width: 640px) {
+  .head {
+    padding: 22px 20px;
+  }
+
+  .card {
+    padding: 22px 18px;
+  }
+
+  .actions .btn {
+    width: 100%;
+  }
+}

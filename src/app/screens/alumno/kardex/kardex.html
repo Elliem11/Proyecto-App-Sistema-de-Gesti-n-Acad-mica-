@@ -1,0 +1,36 @@
+<header class="head">
+  <div class="head__text">
+    <p class="eyebrow">Mi trayectoria</p>
+    <h1>Kárdex</h1>
+    <p class="muted">Historial académico</p>
+  </div>
+
+  <div class="head__badge" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+  </div>
+</header>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        @for (c of columns; track c) {
+          <th>{{ c }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of rows; track $index) {
+        <tr>
+          @for (cell of row; track $index) {
+            <td>{{ cell }}</td>
+          }
+        </tr>
+      } @empty {
+        <tr>
+          <td [attr.colspan]="columns.length" class="empty">Aún no hay registros en tu kárdex.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

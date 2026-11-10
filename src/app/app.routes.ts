@@ -21,6 +21,14 @@ export const routes: Routes = [
         children: [
           { path: 'inicio', loadComponent: dashboard },
           { path: 'horario', loadComponent: () => import('./screens/alumno/horario/horario').then(m => m.AlumnoHorario) },
+          { path: 'asistencias', loadComponent: () => import('./screens/alumno/asistencias/asistencias').then(m => m.AlumnoAsistencias) },
+          { path: 'avisos', loadComponent: () => import('./screens/alumno/avisos/avisos').then(m => m.AlumnoAvisos) },
+          { path: 'tareas', loadComponent: () => import('./screens/alumno/tareas/tareas').then(m => m.AlumnoTareas) },
+          { path: 'tareas/:id', loadComponent: () => import('./screens/alumno/tarea-detalle/tarea-detalle').then(m => m.AlumnoTareaDetalle) },
+          { path: 'tareas/:id/entrega', loadComponent: () => import('./screens/alumno/entrega/entrega').then(m => m.AlumnoEntrega) },
+          { path: 'calificaciones', loadComponent: () => import('./screens/alumno/calificaciones/calificaciones').then(m => m.AlumnoCalificaciones) },
+          { path: 'kardex', loadComponent: () => import('./screens/alumno/kardex/kardex').then(m => m.AlumnoKardex) },
+          { path: 'perfil', loadComponent: () => import('./screens/alumno/perfil/perfil').then(m => m.AlumnoPerfil) },
         ],
 
       },

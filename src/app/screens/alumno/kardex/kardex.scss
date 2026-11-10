@@ -1,0 +1,197 @@
+:host {
+  --ink: #0c0c0e;
+  --lav: #e4def0;
+  --peach: #f4e3da;
+  --sage: #dce7e1;
+  --sky: #d3dcf2;
+  --paper: #fbf9fd;
+  --line: #e0dfea;
+  --muted: #6b6b7b;
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Instrument Sans', system-ui, sans-serif;
+
+  display: block;
+  font-family: var(--sans);
+  color: var(--ink);
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+.muted {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+// Encabezado tipo hero
+.head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  padding: 28px 32px;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 55% at 15% 10%, var(--peach), transparent 70%),
+    radial-gradient(55% 60% at 90% 25%, var(--sky), transparent 70%),
+    radial-gradient(60% 60% at 40% 110%, var(--sage), transparent 70%),
+    var(--lav);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+
+  &__text {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__badge {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: var(--ink);
+    box-shadow: 0 16px 40px rgba(12, 12, 14, 0.25);
+
+    svg {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  }
+}
+
+// Tabla
+.table-wrap {
+  overflow-x: auto;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 14px 34px rgba(12, 12, 14, 0.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+th {
+  background: var(--lav);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 0.95rem;
+  white-space: nowrap;
+
+  &:first-child { border-top-left-radius: 20px; }
+  &:last-child { border-top-right-radius: 20px; }
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+tbody tr {
+  transition: background 0.15s ease;
+
+  &:hover td {
+    background: rgba(228, 222, 240, 0.3);
+  }
+}
+
+// Columna 1: periodo como etiqueta discreta
+td:nth-child(1) {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+// Columna 2: materia destacada
+td:nth-child(2) {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+// Columna 3: calificación en serif, sobre un chip según su valor
+td:nth-child(3) {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+// Última columna: estatus como píldora
+td:last-child {
+  white-space: nowrap;
+
+  // Chip general
+  display: table-cell;
+}
+
+td:last-child {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+// Estilo visual de la píldora de estatus
+td:last-child::before {
+  content: none;
+}
+
+// Estado vacío
+.empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .head {
+    padding: 22px 20px;
+  }
+
+  .head__badge {
+    display: none;
+  }
+
+  th,
+  td {
+    padding: 0.7rem 0.8rem;
+  }
+}

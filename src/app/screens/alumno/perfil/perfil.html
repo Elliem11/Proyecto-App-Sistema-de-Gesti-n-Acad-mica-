@@ -1,0 +1,31 @@
+<div class="head">
+  <div>
+    <h1>Perfil</h1>
+    <p class="muted">Actualiza tus datos de contacto</p>
+  </div>
+</div>
+<form class="card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <label for="nombre">Nombre</label>
+  <input id="nombre" type="text" formControlName="nombre" />
+  @if (invalid('nombre')) {
+    <small class="error">Escribe tu nombre completo.</small>
+  }
+  <label for="correo">Correo</label>
+  <input id="correo" type="email" formControlName="correo" />
+  @if (invalid('correo')) {
+    <small class="error">El correo no es válido.</small>
+  }
+  <label for="telefono">Teléfono</label>
+  <input id="telefono" type="tel" formControlName="telefono" />
+  @if (invalid('telefono')) {
+    <small class="error">Escribe 10 dígitos.</small>
+  }
+
+  @if (sent()) {
+    <div class="alert ok">Datos actualizados.</div>
+  }
+
+  <div class="actions">
+    <button class="btn" type="submit">Guardar cambios</button>
+  </div>
+</form>

@@ -1,0 +1,238 @@
+:host {
+  --ink: #0c0c0e;
+  --lav: #e4def0;
+  --peach: #f4e3da;
+  --sage: #dce7e1;
+  --sky: #d3dcf2;
+  --paper: #fbf9fd;
+  --line: #e0dfea;
+  --muted: #6b6b7b;
+  --serif: 'Fraunces', Georgia, serif;
+  --sans: 'Instrument Sans', system-ui, sans-serif;
+
+  display: block;
+  font-family: var(--sans);
+  color: var(--ink);
+}
+
+h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  margin: 0 0 8px;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.25rem;
+}
+
+.muted {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+// Regresar
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    color: var(--ink);
+  }
+}
+
+// Encabezado tipo hero
+.head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  padding: 28px 32px;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 55% at 15% 10%, var(--peach), transparent 70%),
+    radial-gradient(55% 60% at 90% 25%, var(--sky), transparent 70%),
+    radial-gradient(60% 60% at 40% 110%, var(--sage), transparent 70%),
+    var(--lav);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+
+  &__text {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__badge {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: var(--ink);
+    box-shadow: 0 16px 40px rgba(12, 12, 14, 0.25);
+
+    svg {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  }
+}
+
+// Tarjeta de contenido
+.card {
+  padding: 28px 32px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  box-shadow: 0 14px 34px rgba(12, 12, 14, 0.05);
+}
+
+.block {
+  margin-bottom: 24px;
+}
+
+.body {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+// Pie de la tarjeta: estado y acción
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+// Estado
+.status {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: var(--lav);
+  color: var(--ink);
+
+  &[data-estado='Pendiente'] {
+    background: var(--peach);
+  }
+
+  &[data-estado='Entregada'] {
+    background: var(--sky);
+  }
+
+  &[data-estado='Calificada'] {
+    background: var(--sage);
+  }
+
+  &[data-estado='Vencida'] {
+    background: #f2c4c0;
+  }
+}
+
+// Botón de acción
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--ink);
+  background: linear-gradient(120deg, var(--peach), var(--lav) 50%, var(--sky));
+  background-size: 200% 100%;
+  transition: background-position 0.5s, transform 0.15s, box-shadow 0.3s;
+  box-shadow: 0 10px 30px rgba(211, 220, 242, 0.15);
+
+  &:hover {
+    background-position: 100% 0;
+    box-shadow: 0 14px 36px rgba(211, 220, 242, 0.28);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--sky);
+    outline-offset: 3px;
+  }
+}
+
+// Estado vacío
+.empty {
+  padding: 2rem 1.5rem;
+  border-radius: 20px;
+  border: 1px dashed #cfcde0;
+  background: var(--paper);
+  text-align: center;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .head {
+    padding: 22px 20px;
+  }
+
+  .head__badge {
+    display: none;
+  }
+
+  .card {
+    padding: 22px 18px;
+  }
+
+  .meta .btn {
+    width: 100%;
+  }
+}

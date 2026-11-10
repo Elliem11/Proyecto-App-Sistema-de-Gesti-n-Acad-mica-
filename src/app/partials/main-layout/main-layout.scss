@@ -1,1 +1,84 @@
+:host {
+  display: block;
+}
 
+.shell {
+  --sidebar-w: 240px;
+  --bg: #ecebf4;
+  --surface: #ffffff;
+  --ink: #15151c;
+  --muted: #6b6b7b;
+  --line: #e0dfea;
+  --accent: #15151c;
+  --accent-soft: #dfe1f0;
+
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+
+  // Acentos por rol (usa el atributo data-role de la plantilla)
+  &[data-role='alumno'] {
+    --accent-soft: #dfe1f0;
+  }
+}
+
+// Sidebar: fijo y oculto en móvil, visible en escritorio
+app-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--sidebar-w);
+  z-index: 40;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+
+  &.open {
+    transform: translateX(0);
+  }
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(12, 12, 18, 0.35);
+  backdrop-filter: blur(2px);
+  animation: fade-in 0.2s ease;
+}
+
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+main {
+  flex: 1;
+  padding: 24px 28px 40px;
+  max-width: 1280px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1024px) {
+  app-sidebar {
+    transform: none;
+  }
+
+  .main {
+    margin-left: var(--sidebar-w);
+  }
+}
+
+@media (max-width: 640px) {
+  main {
+    padding: 16px 16px 32px;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
