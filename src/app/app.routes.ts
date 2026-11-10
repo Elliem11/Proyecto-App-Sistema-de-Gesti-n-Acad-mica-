@@ -56,8 +56,15 @@ export const routes: Routes = [
           },
         ],
       },
+      {
+        path: 'admin', canActivate: [roleGuard], data: { role: 'admin' },
+        children: [
+          { path: 'inicio', loadComponent: dashboard },
+        ],
+      },
     ],
   },
+
 
   { path: '**', redirectTo: '' },
 ];
