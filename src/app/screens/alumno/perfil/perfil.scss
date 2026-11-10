@@ -29,14 +29,22 @@ h1 {
   color: var(--muted);
 }
 
-// Encabezado tipo hero
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+// Encabezado tipo hero con arte vectorial
 .head {
   position: relative;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 220px);
   align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
+  gap: 16px;
   margin-bottom: 1.25rem;
   padding: 28px 32px;
   border-radius: 24px;
@@ -47,7 +55,56 @@ h1 {
     radial-gradient(60% 60% at 40% 110%, var(--sage), transparent 70%),
     var(--lav);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+
+  &__text {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__art {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    justify-self: end;
+    max-width: 220px;
+  }
 }
+
+.ring {
+  fill: none;
+  stroke: var(--ink);
+  stroke-opacity: 0.18;
+  stroke-dasharray: 3 9;
+  stroke-linecap: round;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.r1 { animation: spin 60s linear infinite; }
+.r2 { animation: spin 90s linear infinite reverse; }
+
+.float {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: float 6s ease-in-out infinite;
+
+  &.b { animation-duration: 7.5s; animation-delay: -2s; }
+  &.c { animation-duration: 5s; animation-delay: -3.5s; }
+}
+
+.dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse 3s ease-in-out infinite;
+
+  &:nth-of-type(2n) { animation-delay: -1s; }
+  &:nth-of-type(3n) { animation-delay: -2s; }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes float { 50% { transform: translateY(-8px); } }
+@keyframes pulse { 50% { transform: scale(1.6); opacity: 0.4; } }
 
 // Tarjeta del formulario
 .card {
@@ -153,6 +210,18 @@ h1 {
   }
 }
 
+@media (max-width: 860px) {
+  .head {
+    grid-template-columns: 1fr;
+
+    &__art {
+      justify-self: center;
+      max-width: 180px;
+      margin-top: -8px;
+    }
+  }
+}
+
 @media (max-width: 640px) {
   .head {
     padding: 22px 20px;
@@ -164,5 +233,11 @@ h1 {
 
   .actions .btn {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
   }
 }

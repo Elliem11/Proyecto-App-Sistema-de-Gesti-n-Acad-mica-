@@ -1,9 +1,43 @@
-<div class="head">
-  <div>
+<header class="head">
+  <div class="head__text">
+    <p class="eyebrow">Mis calificaciones</p>
     <h1>Mis calificaciones</h1>
     <p class="muted">Por parcial</p>
   </div>
-</div>
+
+  <svg class="head__art" viewBox="0 0 280 150" aria-hidden="true">
+    <circle class="ring r1" cx="200" cy="75" r="68"/>
+    <circle class="ring r2" cx="200" cy="75" r="44"/>
+
+    <!-- birrete -->
+    <g class="float">
+      <path d="M200 42L240 58L200 74L160 58Z" fill="#0c0c0e"/>
+      <path d="M176 66v14c0 5 11 9 24 9s24-4 24-9V66" fill="#0c0c0e" opacity=".85"/>
+      <path d="M200 58L232 60V74" fill="none" stroke="#e4def0" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="232" cy="77" r="3.5" fill="#f4e3da"/>
+    </g>
+
+    <!-- tarjeta de nota -->
+    <g class="float b">
+      <rect x="18" y="30" width="96" height="60" rx="14" fill="#fbf9fd" opacity=".95"/>
+      <text x="66" y="68" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="24" font-weight="600" fill="#0c0c0e">9.3</text>
+      <rect x="34" y="78" width="64" height="4" rx="2" fill="#0c0c0e" opacity=".15"/>
+    </g>
+
+    <!-- chips de parcial -->
+    <g class="float c">
+      <rect x="30" y="108" width="46" height="20" rx="8" fill="#dce7e1"/>
+      <rect x="84" y="108" width="46" height="20" rx="8" fill="#d3dcf2"/>
+      <rect x="138" y="108" width="46" height="20" rx="8" fill="#f4e3da"/>
+    </g>
+
+    <circle class="dot" cx="20" cy="18" r="4" fill="#0c0c0e"/>
+    <circle class="dot" cx="262" cy="26" r="3" fill="#0c0c0e" opacity=".5"/>
+    <circle class="dot" cx="140" cy="10" r="3" fill="#0c0c0e"/>
+    <circle class="dot" cx="268" cy="130" r="4" fill="#0c0c0e" opacity=".5"/>
+  </svg>
+</header>
+
 <div class="table-wrap">
   <table>
     <thead>

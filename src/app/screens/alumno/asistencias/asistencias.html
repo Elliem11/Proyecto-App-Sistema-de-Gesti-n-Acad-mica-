@@ -1,9 +1,44 @@
-<div class="head">
-  <div>
+<header class="head">
+  <div class="head__text">
+    <p class="eyebrow">Mis asistencias</p>
     <h1>Mis asistencias</h1>
     <p class="muted">Resumen por materia</p>
   </div>
-</div>
+
+  <svg class="head__art" viewBox="0 0 280 150" aria-hidden="true">
+    <circle class="ring r1" cx="200" cy="75" r="68"/>
+    <circle class="ring r2" cx="200" cy="75" r="44"/>
+
+    <!-- progreso circular -->
+    <g class="float">
+      <circle cx="200" cy="75" r="30" fill="none" stroke="#0c0c0e" stroke-opacity=".12" stroke-width="8"/>
+      <circle class="progress" cx="200" cy="75" r="30" fill="none" stroke="#0c0c0e" stroke-width="8" stroke-linecap="round" pathLength="100" transform="rotate(-90 200 75)"/>
+      <text x="200" y="81" text-anchor="middle" font-family="Fraunces,Georgia,serif" font-size="16" font-weight="600" fill="#0c0c0e">88%</text>
+    </g>
+
+    <!-- tarjeta de check -->
+    <g class="float b">
+      <rect x="18" y="28" width="104" height="54" rx="14" fill="#0c0c0e"/>
+      <circle cx="42" cy="55" r="11" fill="#dce7e1"/>
+      <path d="M37 55l3.5 3.5 6.5-7" fill="none" stroke="#0c0c0e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="62" y="48" width="44" height="6" rx="3" fill="#fbf9fd" opacity=".85"/>
+      <rect x="62" y="60" width="30" height="5" rx="2.5" fill="#fbf9fd" opacity=".35"/>
+    </g>
+
+    <!-- chips de estado -->
+    <g class="float c">
+      <rect x="30" y="100" width="46" height="22" rx="8" fill="#dce7e1"/>
+      <rect x="84" y="100" width="46" height="22" rx="8" fill="#f4e3da"/>
+      <rect x="138" y="100" width="46" height="22" rx="8" fill="#d3dcf2"/>
+    </g>
+
+    <circle class="dot" cx="20" cy="18" r="4" fill="#0c0c0e"/>
+    <circle class="dot" cx="262" cy="26" r="3" fill="#0c0c0e" opacity=".5"/>
+    <circle class="dot" cx="140" cy="10" r="3" fill="#0c0c0e"/>
+    <circle class="dot" cx="268" cy="130" r="4" fill="#0c0c0e" opacity=".5"/>
+  </svg>
+</header>
+
 <div class="table-wrap">
   <table>
     <thead>
@@ -19,6 +54,10 @@
           @for (cell of row; track $index) {
             <td>{{ cell }}</td>
           }
+        </tr>
+      } @empty {
+        <tr>
+          <td [attr.colspan]="columns.length" class="empty">Aún no hay registros de asistencia.</td>
         </tr>
       }
     </tbody>
