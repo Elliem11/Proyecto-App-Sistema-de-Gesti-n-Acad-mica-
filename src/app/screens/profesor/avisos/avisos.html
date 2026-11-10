@@ -1,0 +1,91 @@
+<header class="head">
+  <div class="head__text">
+    <p class="eyebrow">Comunicación con tus grupos</p>
+    <h1>Publicar un aviso</h1>
+    <p class="muted">Comparte información importante con tus alumnos</p>
+  </div>
+
+  <svg class="head__art" viewBox="0 0 280 150" aria-hidden="true">
+    <circle class="ring r1" cx="200" cy="75" r="68" />
+    <circle class="ring r2" cx="200" cy="75" r="44" />
+
+    <g class="float">
+      <circle cx="200" cy="75" r="30" fill="#0c0c0e" />
+      <path d="M190 65l15-10v35l-15-10h-6v-15z" fill="#fbf9fd" />
+      <path d="M213 65c4 2 6 5 6 10s-2 8-6 10" fill="none" stroke="#fbf9fd" stroke-width="2" stroke-linecap="round" />
+    </g>
+
+    <g class="float b">
+      <rect x="30" y="38" width="96" height="62" rx="12" fill="#fbf9fd" opacity=".6" />
+      <rect x="18" y="30" width="104" height="70" rx="14" fill="#fbf9fd" opacity=".95" />
+      <circle cx="36" cy="48" r="6" fill="#d3dcf2" />
+      <rect x="48" y="45" width="56" height="6" rx="3" fill="#0c0c0e" opacity=".5" />
+      <circle cx="36" cy="66" r="6" fill="#dce7e1" />
+      <rect x="48" y="63" width="44" height="6" rx="3" fill="#0c0c0e" opacity=".25" />
+    </g>
+
+    <circle class="dot" cx="20" cy="18" r="4" fill="#0c0c0e" />
+    <circle class="dot" cx="262" cy="26" r="3" fill="#0c0c0e" opacity=".5" />
+  </svg>
+</header>
+
+<form class="card" (submit)="$event.preventDefault()">
+  <div class="field">
+    <label for="titulo">Título del aviso</label>
+    <input
+      id="titulo"
+      type="text"
+      class="input"
+      maxlength="80"
+      placeholder="Ej. Cambio de salón para la próxima clase"
+      required
+    />
+  </div>
+
+  <div class="avisos__grid">
+    <div class="field">
+      <label for="destinatarios">Destinatarios</label>
+      <select id="destinatarios" class="input" required>
+        <option value="" disabled selected>Selecciona a quién va dirigido</option>
+        <option value="todos">Todos mis grupos</option>
+        <option value="grupo">Un grupo específico</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="tipo">Tipo de aviso</label>
+      <select id="tipo" class="input">
+        <option value="general">General</option>
+        <option value="academico">Académico</option>
+        <option value="importante">Importante</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="contenido">Mensaje</label>
+    <textarea
+      id="contenido"
+      class="input input--area"
+      rows="6"
+      maxlength="1000"
+      placeholder="Escribe aquí la información que necesitan conocer tus alumnos"
+      required
+    ></textarea>
+    <small class="sub">Máximo 1,000 caracteres</small>
+  </div>
+
+  <div class="field">
+    <label for="archivo">Archivo adjunto <em>(opcional, máximo 10 MB)</em></label>
+    <input id="archivo" class="sr-only" type="file" accept=".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg" />
+    <label for="archivo" class="drop">
+      <strong>Haz clic para seleccionar un archivo</strong>
+      <small>Formatos permitidos: PDF, DOC, DOCX, ZIP e imágenes</small>
+    </label>
+  </div>
+
+  <footer class="actions">
+    <button type="reset" class="btn">Limpiar formulario</button>
+    <button type="submit" class="btn btn--dark">Publicar aviso</button>
+  </footer>
+</form>

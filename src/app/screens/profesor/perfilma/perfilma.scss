@@ -1,0 +1,24 @@
+@use '../../../../styles/profesor' as profesor;
+
+@include profesor.formulario;
+@include profesor.hero-art;
+
+.perfilma__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px 28px;
+}
+
+.actions {
+  justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+  .perfilma__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .actions .btn {
+    width: 100%;
+  }
+}

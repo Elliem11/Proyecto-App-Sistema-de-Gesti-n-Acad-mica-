@@ -16,6 +16,8 @@ const MENUS: Record<Role, MenuItem[]> = {
   profesor: [
     { label: 'Inicio', icon: 'home', route: '/profesor/inicio' },
     { label: 'Mis cursos', icon: 'book', route: '/profesor/cursos' },
+    { label: 'Avisos', icon: 'bell', route: '/profesor/avisos' },
+    { label: 'Perfil', icon: 'user', route: '/profesor/perfil' },
   ],
   admin: [
     { label: 'Inicio', icon: 'home', route: '/admin/inicio' },

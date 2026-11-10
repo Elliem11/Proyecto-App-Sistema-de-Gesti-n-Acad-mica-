@@ -41,6 +41,8 @@ export const routes: Routes = [
         children: [
           { path: 'inicio', loadComponent: dashboard },
           { path: 'cursos', loadComponent: () => import('./screens/profesor/cursos/cursos').then(m => m.MisCursos) },
+          { path: 'avisos', loadComponent: () => import('./screens/profesor/avisos/avisos').then(m => m.Avisos) },
+          { path: 'perfil', loadComponent: () => import('./screens/profesor/perfilma/perfilma').then(m => m.Perfilma) },
           {
             path: 'cursos/:id',
             canActivate: [cursoGuard],
