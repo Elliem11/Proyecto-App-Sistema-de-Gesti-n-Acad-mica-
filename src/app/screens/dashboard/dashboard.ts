@@ -38,6 +38,7 @@ export class Dashboard {
   readonly stats = computed(() => STATS[this.user()!.role]);
   readonly shortcuts = computed(() => {
     const role = this.user()!.role;
+    if (role === 'admin') return this.menus.getMenu(role).slice(1);
     if (role !== 'profesor') return this.menus.getMenu(role).slice(1, 5);
 
     const cursoId = this.profesor.cursoActivo()?.id ?? this.profesor.cursos()[0]?.id;

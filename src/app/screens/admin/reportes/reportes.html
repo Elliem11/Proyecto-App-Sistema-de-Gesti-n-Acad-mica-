@@ -1,1 +1,112 @@
-<p>reportes works!</p>
+<header class="head">
+  <div class="head__text">
+    <p class="eyebrow">Administración · Estadísticas</p>
+    <h1>Reportes Académicos</h1>
+    <p class="muted">Genera y consulta estadísticas de asistencia y rendimiento filtrando por periodo, carrera o profesor.</p>
+  </div>
+
+  <svg class="head__art" viewBox="0 0 280 150" aria-hidden="true">
+    <circle class="ring r1" cx="200" cy="75" r="68"/>
+    <circle class="ring r2" cx="200" cy="75" r="44"/>
+    <g class="float">
+      <rect x="150" y="50" width="80" height="60" rx="8" fill="#0c0c0e"/>
+      <path d="M165 70h50M165 85h30" stroke="#fbf9fd" stroke-width="3" stroke-linecap="round"/>
+    </g>
+  </svg>
+</header>
+
+@if (aviso(); as a) {
+  <div [class]="'notice notice--' + a.tipo" role="alert">{{ a.texto }}</div>
+}
+
+<!-- Filtros de Reporte (HU-14 CA1) -->
+<div class="card" style="margin-bottom: 2rem;">
+  <h3 class="sec" style="margin-top: 0;">Filtros de Búsqueda y Generación</h3>
+
+  <div class="grid">
+    <div class="field">
+      <label for="periodo">Periodo Académico</label>
+      <select id="periodo" class="input" [(ngModel)]="filtroPeriodo">
+        <option value="2026-2">Otoño 2026</option>
+        <option value="2026-1">Primavera 2026</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="carrera">Carrera / Programa</label>
+      <select id="carrera" class="input" [(ngModel)]="filtroCarrera">
+        <option value="todos">Todas las carreras</option>
+        <option value="ti">Tecnologías de la Información</option>
+        <option value="sistemas">Ingeniería en Sistemas</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="tipoReporte">Tipo de Reporte</label>
+      <select id="tipoReporte" class="input" [(ngModel)]="tipoReporte">
+        <option value="asistencia">Estadísticas de Asistencia y Riesgo</option>
+        <option value="academico">Rendimiento Académico y Promedios</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="actions" style="margin-top: 1.5rem;">
+    <button type="button" class="btn btn--dark" (click)="generarReporte()">
+      Generar Reporte
+    </button>
+  </div>
+</div>
+
+<!-- Resultados del Reporte (HU-14 CA2, CA3 y HU-25) -->
+@if (reporteGenerado) {
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h3 class="sec" style="margin: 0;">Resultados del Reporte</h3>
+        <p class="sub">Mostrando métricas para el periodo {{ filtroPeriodo }}</p>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn--sm" (click)="exportar('pdf')">Exportar PDF</button>
+        <button type="button" class="btn btn--sm" (click)="exportar('excel')">Exportar Excel</button>
+      </div>
+    </div>
+
+    @if (datosReporte.length > 0) {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Curso / Materia</th>
+              <th>Profesor Asignado</th>
+              <th>Inscritos</th>
+              <th>Asistencia Promedio</th>
+              <th>Alumnos en Riesgo (&lt;80%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of datosReporte; track row.cursoId) {
+              <tr>
+                <td><strong>{{ row.curso }}</strong> <span class="sub">Grupo {{ row.grupo }}</span></td>
+                <td>{{ row.profesor }}</td>
+                <td>{{ row.inscritos }}</td>
+                <td>{{ row.asistenciaPromedio }} %</td>
+                <td>
+                  @if (row.alumnosEnRiesgo > 0) {
+                    <span class="tag tag--rose">{{ row.alumnosEnRiesgo }} en riesgo</span>
+                  } @else {
+                    <span class="tag tag--sage">Sin riesgo</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <!-- Mensaje cuando los filtros no devuelven resultados (HU-14 CA3) -->
+      <div class="empty" style="padding: 2rem; text-align: center; color: var(--muted);">
+        No se encontraron resultados con los filtros seleccionados para este periodo.
+      </div>
+    }
+  </div>
+}

@@ -1,1 +1,288 @@
-<p>lista-grupos works!</p>
+<header class="head">
+  <div class="head__text">
+    <p class="eyebrow">Administración</p>
+    <h1>Grupos</h1>
+    <p class="muted">Crea y administra los grupos del periodo con su profesor, horario y modalidad</p>
+  </div>
+
+  <svg class="head__art" viewBox="0 0 280 150" aria-hidden="true">
+    <circle class="ring r1" cx="200" cy="75" r="68"/>
+    <circle class="ring r2" cx="200" cy="75" r="44"/>
+
+    <!-- grupo -->
+    <g class="float">
+      <circle cx="200" cy="75" r="30" fill="#0c0c0e"/>
+      <circle cx="200" cy="68" r="7" fill="#fbf9fd"/>
+      <path d="M186 90a14 12 0 0 1 28 0z" fill="#fbf9fd"/>
+      <circle cx="187" cy="72" r="4.5" fill="#fbf9fd" opacity=".7"/>
+      <circle cx="213" cy="72" r="4.5" fill="#fbf9fd" opacity=".7"/>
+    </g>
+
+    <!-- tarjetas de grupo -->
+    <g class="float b">
+      <rect x="30" y="38" width="96" height="62" rx="12" fill="#fbf9fd" opacity=".6"/>
+      <rect x="18" y="30" width="104" height="70" rx="14" fill="#fbf9fd" opacity=".95"/>
+      <circle cx="36" cy="48" r="6" fill="#dce7e1"/>
+      <rect x="48" y="45" width="56" height="6" rx="3" fill="#0c0c0e" opacity=".5"/>
+      <circle cx="36" cy="66" r="6" fill="#d3dcf2"/>
+      <rect x="48" y="63" width="44" height="6" rx="3" fill="#0c0c0e" opacity=".25"/>
+      <circle cx="36" cy="84" r="6" fill="#f4e3da"/>
+      <rect x="48" y="81" width="52" height="6" rx="3" fill="#0c0c0e" opacity=".25"/>
+    </g>
+
+    <g class="float c">
+      <rect x="140" y="112" width="60" height="22" rx="8" fill="#e4def0"/>
+      <rect x="208" y="112" width="48" height="22" rx="8" fill="#dce7e1"/>
+    </g>
+
+    <circle class="dot" cx="20" cy="18" r="4" fill="#0c0c0e"/>
+    <circle class="dot" cx="262" cy="26" r="3" fill="#0c0c0e" opacity=".5"/>
+    <circle class="dot" cx="140" cy="10" r="3" fill="#0c0c0e"/>
+    <circle class="dot" cx="268" cy="130" r="4" fill="#0c0c0e" opacity=".5"/>
+  </svg>
+</header>
+
+@if (aviso(); as a) {
+  <div [class]="'notice notice--' + a.tipo" [attr.role]="a.tipo === 'error' ? 'alert' : 'status'">{{ a.texto }}</div>
+}
+
+<!-- Formulario de crear / editar -->
+@if (formAbierto()) {
+  <form class="card card--form" [formGroup]="form" (ngSubmit)="guardar()" novalidate aria-labelledby="t-form">
+    <h2 class="sec" id="t-form">{{ titulo() }}</h2>
+
+    @if (errorGuardado(); as e) {
+      <div class="notice notice--error" role="alert">{{ e }}</div>
+    }
+
+    <div class="grid">
+      <div class="field">
+        <label for="materia">Materia</label>
+        <select id="materia" class="input" formControlName="materiaId">
+          <option [ngValue]="null" disabled>Selecciona una materia</option>
+          @for (m of materias; track m.id) {
+            <option [ngValue]="m.id">{{ m.clave }} · {{ m.nombre }}</option>
+          }
+        </select>
+        @if (form.controls.materiaId.touched && form.controls.materiaId.invalid) {
+          <small class="error">Selecciona una materia.</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="periodo">Periodo</label>
+        <select id="periodo" class="input" formControlName="periodoId">
+          @for (p of periodos; track p.id) {
+            <option [ngValue]="p.id">{{ p.nombre }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="grupo">Grupo <em>(número o letra)</em></label>
+        <input id="grupo" class="input" formControlName="grupo" maxlength="10" autocomplete="off" />
+        @if (form.controls.grupo.touched && form.controls.grupo.invalid) {
+          <small class="error">Escribe el identificador del grupo.</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="profesor">Profesor</label>
+        <select id="profesor" class="input" formControlName="profesorId">
+          <option [ngValue]="null" disabled>Selecciona un profesor</option>
+          @for (p of profesores; track p.id) {
+            <option [ngValue]="p.id">{{ p.nombre }}</option>
+          }
+        </select>
+        @if (form.controls.profesorId.touched && form.controls.profesorId.invalid) {
+          <small class="error">Selecciona un profesor.</small>
+        }
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend>Modalidad</legend>
+      <div class="options">
+        <label class="option">
+          <input type="radio" value="presencial" formControlName="modalidad" />
+          <span>Presencial<small>Se indica el aula</small></span>
+        </label>
+        <label class="option">
+          <input type="radio" value="virtual" formControlName="modalidad" />
+          <span>Virtual<small>Se indica el enlace de la sesión</small></span>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="grid grid--2">
+      <div class="field">
+        <label for="aula">Aula @if (form.controls.modalidad.value === 'presencial') { <em>(obligatoria)</em> } @else { <em>(opcional)</em> }</label>
+        <input id="aula" class="input" formControlName="aula" maxlength="80" placeholder="Ej. Edificio 1CC2 · Aula 105" autocomplete="off" />
+        @if (form.controls.aula.touched && form.hasError('aulaFaltante')) {
+          <small class="error">Indica el aula del grupo presencial.</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="enlace">Enlace de sesión virtual @if (form.controls.modalidad.value === 'virtual') { <em>(obligatorio)</em> } @else { <em>(opcional)</em> }</label>
+        <input id="enlace" class="input" formControlName="enlace" maxlength="300" placeholder="https://" inputmode="url" autocomplete="off" />
+        @if (form.controls.enlace.touched && form.hasError('enlaceFaltante')) {
+          <small class="error">Indica el enlace del grupo virtual.</small>
+        } @else if (form.controls.enlace.touched && form.controls.enlace.hasError('pattern')) {
+          <small class="error">El enlace debe empezar con http:// o https://.</small>
+        }
+      </div>
+    </div>
+
+    <fieldset class="field">
+      <legend>Horario semanal</legend>
+      <div formArrayName="sesiones" class="sesiones">
+        @for (s of sesiones.controls; track s; let i = $index) {
+          <div class="sesion" [formGroupName]="i">
+            <div class="field">
+              <label [for]="'dia-' + i">Día</label>
+              <select [id]="'dia-' + i" class="input" formControlName="dia">
+                @for (d of dias; track d) {
+                  <option [value]="d">{{ d }}</option>
+                }
+              </select>
+            </div>
+            <div class="field">
+              <label [for]="'ini-' + i">Inicio</label>
+              <input [id]="'ini-' + i" type="time" class="input" formControlName="inicio" [class.input--bad]="s.controls.inicio.touched && s.controls.inicio.invalid" />
+            </div>
+            <div class="field">
+              <label [for]="'fin-' + i">Fin</label>
+              <input [id]="'fin-' + i" type="time" class="input" formControlName="fin" [class.input--bad]="s.controls.fin.touched && (s.controls.fin.invalid || s.hasError('rango'))" />
+            </div>
+            <button
+              type="button"
+              class="btn btn--sm sesion__quitar"
+              (click)="quitarSesion(i)"
+              [disabled]="sesiones.length === 1"
+              [attr.aria-label]="'Quitar la sesión ' + (i + 1)"
+            >Quitar</button>
+
+            @if (s.touched && (s.controls.inicio.invalid || s.controls.fin.invalid)) {
+              <small class="error sesion__error">Indica la hora de inicio y de fin.</small>
+            } @else if (s.touched && s.hasError('rango')) {
+              <small class="error sesion__error">La hora de fin debe ser posterior a la de inicio.</small>
+            }
+          </div>
+        }
+      </div>
+      <div>
+        <button type="button" class="btn btn--sm" (click)="agregarSesion()">+ Agregar sesión</button>
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button type="button" class="btn" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn--dark">{{ editandoId() === null ? 'Crear grupo' : 'Guardar cambios' }}</button>
+    </div>
+  </form>
+}
+
+<!-- Filtros -->
+<div class="bar" [formGroup]="filtros">
+  <div class="field field--grow">
+    <label for="busqueda">Buscar</label>
+    <input id="busqueda" type="search" class="input" formControlName="busqueda" placeholder="Materia, clave o profesor" autocomplete="off" />
+  </div>
+
+  <div class="field">
+    <label for="f-periodo">Periodo</label>
+    <select id="f-periodo" class="input" formControlName="periodo">
+      <option value="">Todos</option>
+      @for (p of periodos; track p.id) {
+        <option [value]="p.id">{{ p.nombre }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="f-modalidad">Modalidad</label>
+    <select id="f-modalidad" class="input" formControlName="modalidad">
+      <option value="">Todas</option>
+      <option value="presencial">Presencial</option>
+      <option value="virtual">Virtual</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="f-estado">Estado</label>
+    <select id="f-estado" class="input" formControlName="estado">
+      <option value="">Todos</option>
+      <option value="abierto">Abierto</option>
+      <option value="cerrado">Cerrado</option>
+    </select>
+  </div>
+
+  <button type="button" class="btn bar__clear" (click)="limpiar()" [disabled]="!hayFiltros()">Limpiar filtros</button>
+</div>
+
+<div class="tools">
+  <div class="summary" aria-label="Resumen de grupos">
+    <span class="tag tag--lav">{{ resumen().grupos }} grupos</span>
+    <span class="tag tag--sage">{{ resumen().abiertos }} abiertos</span>
+    <span class="tag tag--sky">{{ resumen().inscritos }} alumnos inscritos</span>
+  </div>
+  <button type="button" class="btn btn--dark cta" (click)="abrirNuevo()">Nuevo grupo</button>
+</div>
+
+<!-- Tabla -->
+<div class="table-wrap">
+  <table aria-label="Lista de grupos">
+    <thead>
+      <tr>
+        @for (c of columns; track c) {
+          <th scope="col">{{ c }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (g of visibles(); track g.id) {
+        <tr>
+          <td>
+            <span class="name">{{ materia(g.materiaId)?.nombre }} · Grupo {{ g.grupo }}</span>
+            <span class="sub">{{ materia(g.materiaId)?.clave }} · {{ nombrePeriodo(g.periodoId) }}</span>
+            <span class="tag" [class.tag--sage]="g.estado === 'abierto'" [class.tag--rose]="g.estado === 'cerrado'">
+              {{ g.estado === 'abierto' ? 'Abierto' : 'Cerrado' }}
+            </span>
+          </td>
+          <td>{{ nombreProfesor(g.profesorId) }}</td>
+          <td>
+            <ul class="chips">
+              @for (s of g.horario; track s.dia + s.inicio) {
+                <li class="chip"><span>{{ formatoHorario(s) }}</span></li>
+              }
+            </ul>
+          </td>
+          <td>
+            <span class="tag tag--sky">{{ g.modalidad === 'presencial' ? 'Presencial' : 'Virtual' }}</span>
+            <span class="sub sub--block">
+              @if (g.aula) { {{ g.aula }} } @else if (g.enlace) { Con enlace de sesión } @else { Sin lugar asignado }
+            </span>
+          </td>
+          <td>{{ g.inscritos }}</td>
+          <td>
+            <div class="btn-group">
+              <a class="btn btn--sm" [routerLink]="rutaDetalle(g.id)" [attr.aria-label]="'Ver detalle de ' + materia(g.materiaId)?.nombre + ' grupo ' + g.grupo">Ver detalle</a>
+              <button type="button" class="btn btn--sm" (click)="abrirEditar(g)" [attr.aria-label]="'Editar ' + materia(g.materiaId)?.nombre + ' grupo ' + g.grupo">Editar</button>
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td [attr.colspan]="columns.length" class="empty" role="status">
+            @if (grupos().length === 0) { Aún no hay grupos creados. } @else { Ningún grupo coincide con los filtros. }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <footer class="foot">
+    <span class="sub">Un profesor no puede tener dos grupos en el mismo día y hora dentro del mismo periodo.</span>
+  </footer>
+</div>

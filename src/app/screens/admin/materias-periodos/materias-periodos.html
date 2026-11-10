@@ -1,1 +1,240 @@
-<p>materias-periodos works!</p>
+<header class="head">
+  <div class="head__text">
+    <p class="eyebrow">Administración · Oferta académica</p>
+    <h1>Materias y periodos</h1>
+    <p class="muted">Gestiona la oferta académica y el calendario escolar</p>
+  </div>
+
+  <svg class="head__art" viewBox="0 0 280 150" aria-hidden="true">
+    <circle class="ring r1" cx="200" cy="75" r="68"/>
+    <circle class="ring r2" cx="200" cy="75" r="44"/>
+
+    <!-- calendario -->
+    <g class="float">
+      <circle cx="200" cy="75" r="30" fill="#0c0c0e"/>
+      <rect x="186" y="62" width="28" height="26" rx="5" fill="#fbf9fd"/>
+      <rect x="186" y="62" width="28" height="7" rx="3.5" fill="#dce7e1"/>
+      <rect x="190" y="74" width="5" height="5" rx="1" fill="#0c0c0e" opacity=".55"/>
+      <rect x="197" y="74" width="5" height="5" rx="1" fill="#0c0c0e" opacity=".25"/>
+      <rect x="204" y="74" width="5" height="5" rx="1" fill="#0c0c0e" opacity=".25"/>
+      <rect x="190" y="81" width="5" height="5" rx="1" fill="#0c0c0e" opacity=".25"/>
+      <rect x="197" y="81" width="5" height="5" rx="1" fill="#f6d5d5"/>
+    </g>
+
+    <!-- tarjeta de materia -->
+    <g class="float b">
+      <rect x="18" y="30" width="104" height="70" rx="14" fill="#fbf9fd" opacity=".95"/>
+      <rect x="28" y="42" width="34" height="8" rx="4" fill="#0c0c0e" opacity=".7"/>
+      <rect x="28" y="56" width="74" height="5" rx="2.5" fill="#0c0c0e" opacity=".2"/>
+      <rect x="28" y="66" width="60" height="5" rx="2.5" fill="#0c0c0e" opacity=".2"/>
+      <rect x="28" y="80" width="30" height="10" rx="5" fill="#d3dcf2"/>
+    </g>
+
+    <g class="float c">
+      <rect x="140" y="112" width="60" height="22" rx="8" fill="#f4e3da"/>
+      <rect x="208" y="112" width="48" height="22" rx="8" fill="#d3dcf2"/>
+    </g>
+
+    <circle class="dot" cx="20" cy="18" r="4" fill="#0c0c0e"/>
+    <circle class="dot" cx="262" cy="26" r="3" fill="#0c0c0e" opacity=".5"/>
+    <circle class="dot" cx="140" cy="10" r="3" fill="#0c0c0e"/>
+    <circle class="dot" cx="268" cy="130" r="4" fill="#0c0c0e" opacity=".5"/>
+  </svg>
+</header>
+
+<!-- Tabs -->
+<div class="bar" role="tablist" aria-label="Secciones">
+  <button type="button" class="btn" [class.btn--dark]="tab() === 'materias'" [attr.aria-selected]="tab() === 'materias'" (click)="cambiarTab('materias')">Materias</button>
+  <button type="button" class="btn" [class.btn--dark]="tab() === 'periodos'" [attr.aria-selected]="tab() === 'periodos'" (click)="cambiarTab('periodos')">Periodos</button>
+</div>
+
+@if (aviso(); as a) {
+  <div [class]="'notice notice--' + a.tipo" [attr.role]="a.tipo === 'error' ? 'alert' : 'status'">{{ a.texto }}</div>
+}
+
+<!-- ============ MATERIAS ============ -->
+@if (tab() === 'materias') {
+  <form [formGroup]="materiaForm" (ngSubmit)="guardarMateria()" novalidate>
+    <div class="bar">
+      <div class="field">
+        <label for="clave">Clave</label>
+        <input id="clave" class="input" formControlName="clave" maxlength="20" placeholder="TIC-310" />
+        @if (materiaForm.controls.clave.touched && materiaForm.controls.clave.invalid) {
+          <small class="error">Clave obligatoria (máx. 20, sin &lt; ni &gt;).</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="nombreMateria">Nombre</label>
+        <input id="nombreMateria" class="input" formControlName="nombre" maxlength="120" placeholder="Programación Web" />
+        @if (materiaForm.controls.nombre.touched && materiaForm.controls.nombre.invalid) {
+          <small class="error">Nombre obligatorio.</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="creditos">Créditos</label>
+        <input id="creditos" type="number" min="1" max="30" class="input" formControlName="creditos" />
+        @if (materiaForm.controls.creditos.touched && materiaForm.controls.creditos.invalid) {
+          <small class="error">Créditos entre 1 y 30.</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="carrera">Carrera</label>
+        <input id="carrera" class="input" formControlName="carrera" maxlength="80" placeholder="Ing. en Sistemas" />
+        @if (materiaForm.controls.carrera.touched && materiaForm.controls.carrera.invalid) {
+          <small class="error">Carrera obligatoria.</small>
+        }
+      </div>
+
+      <div class="field">
+        <span class="sub">{{ materiaEditando() ? 'Editando ' + materiaEditando()?.clave : 'Nueva materia' }}</span>
+        <div class="foot__act">
+          @if (materiaEditando()) {
+            <button type="button" class="btn" (click)="cancelarMateria()">Cancelar</button>
+          }
+          <button type="submit" class="btn btn--dark" [disabled]="guardando()">
+            {{ guardando() ? 'Guardando…' : (materiaEditando() ? 'Guardar cambios' : '+ Agregar materia') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="tools">
+    <label class="search" [class.search--error]="busqueda.invalid">
+      <span class="sr-only">Buscar materia</span>
+      <input type="search" [formControl]="busqueda" maxlength="60" autocomplete="off" placeholder="Buscar por nombre, clave o carrera" />
+    </label>
+    @if (busqueda.hasError('pattern')) {
+      <p class="error" role="alert">No uses los caracteres &lt; ni &gt;.</p>
+    }
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          @for (c of columnsMaterias; track c) {
+            <th scope="col">{{ c }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (m of materiasFiltradas(); track m.id) {
+          <tr>
+            <td>{{ m.clave }}</td>
+            <td class="name">{{ m.nombre }}</td>
+            <td>{{ m.creditos }}</td>
+            <td>{{ m.carrera }}</td>
+            <td>
+              <span class="tag" [class.tag--sage]="m.activa" [class.tag--rose]="!m.activa">
+                {{ m.activa ? 'Activa' : 'Inactiva' }}
+              </span>
+            </td>
+            <td class="foot__act">
+              <button type="button" class="btn btn--sm" (click)="editarMateria(m)">Editar</button>
+              <button type="button" class="btn btn--sm" (click)="toggleMateria(m)">
+                {{ m.activa ? 'Desactivar' : 'Activar' }}
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td [attr.colspan]="columnsMaterias.length" class="empty" role="status">{{ mensajeVacio() }}</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+<!-- ============ PERIODOS ============ -->
+@if (tab() === 'periodos') {
+  <form [formGroup]="periodoForm" (ngSubmit)="guardarPeriodo()" novalidate>
+    <div class="bar">
+      <div class="field">
+        <label for="nombrePeriodo">Nombre</label>
+        <input id="nombrePeriodo" class="input" formControlName="nombre" maxlength="7" placeholder="2026-1" />
+        @if (periodoForm.controls.nombre.touched && periodoForm.controls.nombre.hasError('required')) {
+          <small class="error">El nombre es obligatorio.</small>
+        } @else if (periodoForm.controls.nombre.hasError('pattern')) {
+          <small class="error">Formato esperado: AAAA-N (ej. 2026-1).</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="fechaInicio">Fecha de inicio</label>
+        <input id="fechaInicio" type="date" class="input" formControlName="fechaInicio" />
+        @if (periodoForm.controls.fechaInicio.touched && periodoForm.controls.fechaInicio.invalid) {
+          <small class="error">Selecciona la fecha de inicio.</small>
+        }
+      </div>
+
+      <div class="field">
+        <label for="fechaFin">Fecha de fin</label>
+        <input id="fechaFin" type="date" class="input" formControlName="fechaFin" />
+        @if (periodoForm.controls.fechaFin.touched) {
+          @if (periodoForm.controls.fechaFin.hasError('required')) {
+            <small class="error">Selecciona la fecha de fin.</small>
+          } @else if (periodoForm.hasError('rangoInvalido')) {
+            <small class="error">La fecha de fin debe ser posterior a la de inicio.</small>
+          }
+        }
+      </div>
+
+      <div class="field">
+        <span class="sub">{{ periodoEditando() ? 'Editando ' + periodoEditando()?.nombre : 'Nuevo periodo' }}</span>
+        <div class="foot__act">
+          @if (periodoEditando()) {
+            <button type="button" class="btn" (click)="cancelarPeriodo()">Cancelar</button>
+          }
+          <button type="submit" class="btn btn--dark" [disabled]="guardando()">
+            {{ guardando() ? 'Guardando…' : (periodoEditando() ? 'Guardar cambios' : '+ Agregar periodo') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          @for (c of columnsPeriodos; track c) {
+            <th scope="col">{{ c }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of periodos(); track p.id) {
+          <tr>
+            <td class="name">{{ p.nombre }}</td>
+            <td>{{ p.fechaInicio | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ p.fechaFin | date: 'dd/MM/yyyy' }}</td>
+            <td>
+              <span class="tag" [class.tag--sage]="p.activo" [class.tag--rose]="!p.activo">
+                {{ p.activo ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td>
+              <span class="tag" [class.tag--sky]="p.inscripcionesAbiertas" [class.tag--peach]="!p.inscripcionesAbiertas">
+                {{ p.inscripcionesAbiertas ? 'Abiertas' : 'Bloqueadas' }}
+              </span>
+            </td>
+            <td class="foot__act">
+              <button type="button" class="btn btn--sm" (click)="editarPeriodo(p)">Editar</button>
+              @if (!p.activo) {
+                <button type="button" class="btn btn--sm btn--dark" (click)="activarPeriodo(p)">Activar</button>
+              }
+              <button type="button" class="btn btn--sm" (click)="toggleInscripciones(p)">
+                {{ p.inscripcionesAbiertas ? 'Bloquear inscripciones' : 'Abrir inscripciones' }}
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td [attr.colspan]="columnsPeriodos.length" class="empty" role="status">Aún no hay periodos registrados.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

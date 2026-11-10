@@ -1,1 +1,87 @@
-<p>usuarios works!</p>
+<header class="head">
+  <div class="head__text">
+    <p class="eyebrow">Administración · Sistema</p>
+    <h1>Gestión de Usuarios y Permisos</h1>
+    <p class="muted">Crea, edita o desactiva cuentas institucionales y asigna roles y permisos según corresponda (HU-12, HU-13).</p>
+  </div>
+
+  <svg class="head__art" viewBox="0 0 280 150" aria-hidden="true">
+    <circle class="ring r1" cx="200" cy="75" r="68"/>
+    <circle class="ring r2" cx="200" cy="75" r="44"/>
+    <g class="float">
+      <circle cx="200" cy="75" r="25" fill="#0c0c0e"/>
+      <path d="M190 75h20M200 65v20" stroke="#fbf9fd" stroke-width="3" stroke-linecap="round"/>
+    </g>
+  </svg>
+</header>
+
+@if (aviso(); as a) {
+  <div [class]="'notice notice--' + a.tipo" role="alert">{{ a.texto }}</div>
+}
+
+<!-- Barra de Herramientas y Buscador -->
+<div class="card" style="margin-bottom: 2rem;">
+  <div class="tools" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+    <div class="search" style="flex: 1; min-width: 280px;">
+      <input type="text" class="input" placeholder="Buscar por nombre, matrícula o correo institucional..." [(ngModel)]="busqueda" />
+    </div>
+    <button type="button" class="btn btn--dark" (click)="abrirModalNuevo()">
+      + Nuevo Usuario
+    </button>
+  </div>
+</div>
+
+<!-- Tabla de Usuarios Registrados -->
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre y Apellidos</th>
+        <th>Correo Institucional</th>
+        <th>Matrícula / Clave</th>
+        <th>Rol Asignado</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (u of usuariosFiltrados(); track u.id) {
+        <tr>
+          <td>
+            <span class="name">{{ u.nombre }} {{ u.apellidos }}</span>
+          </td>
+          <td>{{ u.correo }}</td>
+          <td><span class="sub">{{ u.matricula }}</span></td>
+          <td>
+            <span class="tag" [ngClass]="{
+              'tag--sky': u.rol === 'alumno',
+              'tag--sage': u.rol === 'profesor',
+              'tag--peach': u.rol === 'administrador'
+            }">
+              {{ u.rol | titlecase }}
+            </span>
+          </td>
+          <td>
+            @if (u.activo) {
+              <span class="tag tag--sage">Activo</span>
+            } @else {
+              <span class="tag tag--rose">Desactivado</span>
+            }
+          </td>
+          <td>
+            <div class="btn-group">
+              <button type="button" class="btn btn--sm" (click)="editarUsuario(u)">Editar</button>
+              <button type="button" class="btn btn--sm" [ngClass]="u.activo ? 'btn--rose' : 'btn--sage'" (click)="toggleActivo(u)">
+                {{ u.activo ? 'Desactivar' : 'Activar' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="6" class="empty">No se encontraron usuarios registrados en la base de datos.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

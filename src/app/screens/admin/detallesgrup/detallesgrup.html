@@ -1,1 +1,257 @@
-<p>detallesgrup works!</p>
+@if (cargando()) {
+  <div class="notice notice--info" role="status">Cargando información del grupo…</div>
+} @else if (noEncontrado() || !grupo()) {
+  <div class="notice notice--error" role="alert">No se encontró el grupo solicitado.</div>
+  <a class="btn" [routerLink]="rutaLista">Volver a grupos</a>
+} @else {
+  @let g = grupo()!;
+
+  <header class="head">
+    <div class="head__text">
+      <a class="crumb" [routerLink]="rutaLista">← Volver a grupos</a>
+      <p class="eyebrow">{{ g.clave }} · {{ g.periodo }}</p>
+      <h1>{{ g.materia }} · Grupo {{ g.grupo }}</h1>
+      <p class="muted">{{ g.carrera }} · {{ g.creditos }} créditos</p>
+      <div class="head__tags">
+        <span class="tag" [class.tag--sage]="!cerrado()" [class.tag--rose]="cerrado()">{{ cerrado() ? 'Curso cerrado' : 'Curso abierto' }}</span>
+        <span class="tag tag--sky">{{ g.modalidad === 'presencial' ? 'Presencial' : 'Virtual' }}</span>
+      </div>
+    </div>
+
+    <svg class="head__art" viewBox="0 0 280 150" aria-hidden="true">
+      <circle class="ring r1" cx="200" cy="75" r="68"/>
+      <circle class="ring r2" cx="200" cy="75" r="44"/>
+
+      <!-- grupo -->
+      <g class="float">
+        <circle cx="200" cy="75" r="30" fill="#0c0c0e"/>
+        <circle cx="200" cy="68" r="7" fill="#fbf9fd"/>
+        <path d="M186 90a14 12 0 0 1 28 0z" fill="#fbf9fd"/>
+        <circle cx="187" cy="72" r="4.5" fill="#fbf9fd" opacity=".7"/>
+        <circle cx="213" cy="72" r="4.5" fill="#fbf9fd" opacity=".7"/>
+      </g>
+
+      <!-- horario -->
+      <g class="float b">
+        <rect x="30" y="38" width="96" height="62" rx="12" fill="#fbf9fd" opacity=".6"/>
+        <rect x="18" y="30" width="104" height="70" rx="14" fill="#fbf9fd" opacity=".95"/>
+        <rect x="30" y="42" width="30" height="14" rx="5" fill="#dce7e1"/>
+        <rect x="66" y="42" width="44" height="14" rx="5" fill="#d3dcf2"/>
+        <rect x="30" y="62" width="44" height="14" rx="5" fill="#f4e3da"/>
+        <rect x="80" y="62" width="30" height="14" rx="5" fill="#e4def0"/>
+        <rect x="30" y="82" width="52" height="8" rx="4" fill="#0c0c0e" opacity=".2"/>
+      </g>
+
+      <g class="float c">
+        <rect x="140" y="112" width="60" height="22" rx="8" fill="#dce7e1"/>
+        <rect x="208" y="112" width="48" height="22" rx="8" fill="#f6d5d5"/>
+      </g>
+
+      <circle class="dot" cx="20" cy="18" r="4" fill="#0c0c0e"/>
+      <circle class="dot" cx="262" cy="26" r="3" fill="#0c0c0e" opacity=".5"/>
+      <circle class="dot" cx="140" cy="10" r="3" fill="#0c0c0e"/>
+      <circle class="dot" cx="268" cy="130" r="4" fill="#0c0c0e" opacity=".5"/>
+    </svg>
+  </header>
+
+  @if (aviso(); as a) {
+    <div [class]="'notice notice--' + a.tipo" [attr.role]="a.tipo === 'error' ? 'alert' : 'status'">{{ a.texto }}</div>
+  }
+
+  <!-- Datos generales -->
+  <div class="panels">
+    <section class="panel" aria-labelledby="t-datos">
+      <h2 class="sec" id="t-datos">Datos del grupo</h2>
+      <dl class="info">
+        <div class="info__row"><dt>Materia</dt><dd>{{ g.materia }}</dd></div>
+        <div class="info__row"><dt>Clave</dt><dd>{{ g.clave }}</dd></div>
+        <div class="info__row"><dt>Grupo</dt><dd>{{ g.grupo }}</dd></div>
+        <div class="info__row"><dt>Periodo</dt><dd>{{ g.periodo }}</dd></div>
+        <div class="info__row"><dt>Créditos</dt><dd>{{ g.creditos }}</dd></div>
+        <div class="info__row">
+          <dt>Profesor</dt>
+          <dd>{{ g.profesor.nombre }}<span class="sub">{{ g.profesor.correo }}</span></dd>
+        </div>
+        <div class="info__row"><dt>Asistencia mínima</dt><dd>{{ g.minAsistencia }} %</dd></div>
+      </dl>
+    </section>
+
+    <section class="panel" aria-labelledby="t-horario">
+      <h2 class="sec" id="t-horario">Horario y modalidad</h2>
+      <dl class="info">
+        <div class="info__row"><dt>Modalidad</dt><dd>{{ g.modalidad === 'presencial' ? 'Presencial' : 'Virtual' }}</dd></div>
+        <div class="info__row">
+          <dt>Aula</dt>
+          <dd>@if (g.aula) { {{ g.aula }} } @else { <span class="sub">—</span> }</dd>
+        </div>
+        <div class="info__row">
+          <dt>Sesión virtual</dt>
+          <dd>
+            @if (g.enlace) {
+              <a class="file" [href]="g.enlace" target="_blank" rel="noopener noreferrer">Abrir enlace</a>
+            } @else {
+              <span class="sub">—</span>
+            }
+          </dd>
+        </div>
+        <div class="info__row info__row--stack">
+          <dt>Sesiones por semana</dt>
+          <dd>
+            <ul class="chips">
+              @for (s of g.horario; track s.dia + s.inicio) {
+                <li class="chip"><span>{{ formatoHorario(s) }}</span></li>
+              } @empty {
+                <li class="sub">Sin horario asignado.</li>
+              }
+            </ul>
+          </dd>
+        </div>
+      </dl>
+    </section>
+  </div>
+
+  <!-- Contenido que complementa el profesor -->
+  <div class="panels">
+    <section class="panel" aria-labelledby="t-contenido">
+      <h2 class="sec" id="t-contenido">Descripción y temario</h2>
+      <p class="sub sub--note">Lo complementa el profesor del grupo.</p>
+      @if (g.descripcion) {
+        <p class="texto">{{ g.descripcion }}</p>
+      } @else {
+        <p class="sub">El profesor aún no agrega una descripción.</p>
+      }
+      @if (g.temario.length > 0) {
+        <ol class="temario">
+          @for (t of g.temario; track t) {
+            <li>{{ t }}</li>
+          }
+        </ol>
+      } @else {
+        <p class="sub">El profesor aún no agrega el temario.</p>
+      }
+    </section>
+
+    <section class="panel" aria-labelledby="t-eval">
+      <h2 class="sec" id="t-eval">Evaluaciones</h2>
+      @if (g.evaluaciones.length > 0) {
+        <ul class="pesos">
+          @for (e of g.evaluaciones; track e.nombre) {
+            <li class="pesos__row"><span>{{ e.nombre }}</span><strong>{{ e.peso }} %</strong></li>
+          }
+        </ul>
+        <p class="pesos__total">
+          <span class="tag" [class.tag--sage]="sumaPesos() === 100" [class.tag--rose]="sumaPesos() !== 100">
+            {{ sumaPesos() === 100 ? 'Suman 100 %' : 'Suman ' + sumaPesos() + ' % (deben sumar 100 %)' }}
+          </span>
+        </p>
+      } @else {
+        <p class="sub">El profesor aún no define las evaluaciones.</p>
+      }
+    </section>
+  </div>
+
+  <!-- Alumnos inscritos -->
+  <h2 class="sec">Alumnos inscritos</h2>
+
+  <ul class="facts" aria-label="Resumen del grupo">
+    <li class="tag tag--lav">{{ resumen().inscritos }} inscritos</li>
+    <li class="tag" [class.tag--rose]="resumen().enRiesgo > 0" [class.tag--sage]="resumen().enRiesgo === 0">
+      {{ resumen().enRiesgo }} en riesgo por faltas
+    </li>
+    <li class="tag tag--sky">
+      Asistencia promedio: {{ resumen().promedioAsistencia === null ? '—' : resumen().promedioAsistencia + ' %' }}
+    </li>
+  </ul>
+
+  <div class="bar">
+    <div class="field field--grow">
+      <label for="matricula">Inscribir alumno por matrícula</label>
+      <input
+        id="matricula"
+        class="input"
+        [formControl]="matriculaCtrl"
+        [class.input--bad]="matriculaCtrl.touched && matriculaCtrl.invalid"
+        placeholder="Ej. 202147003"
+        inputmode="numeric"
+        autocomplete="off"
+        (keydown.enter)="inscribir()"
+      />
+      @if (matriculaCtrl.touched && matriculaCtrl.invalid) {
+        <small class="error">Escribe la matrícula del alumno.</small>
+      }
+    </div>
+    <button type="button" class="btn btn--dark bar__clear" (click)="inscribir()" [disabled]="cerrado()">Inscribir</button>
+  </div>
+  @if (cerrado()) {
+    <p class="sub sub--note">El curso está cerrado, por lo que no admite nuevas inscripciones ni bajas.</p>
+  }
+
+  <div class="tools">
+    <label class="search">
+      <span class="sr-only">Buscar alumno en este grupo</span>
+      <input type="search" [formControl]="buscarCtrl" placeholder="Buscar por nombre o matrícula" autocomplete="off" />
+    </label>
+  </div>
+
+  <div class="table-wrap">
+    <table aria-label="Alumnos inscritos en el grupo">
+      <thead>
+        <tr>
+          @for (c of columns; track c) {
+            <th scope="col">{{ c }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (a of visibles(); track a.id) {
+          <tr>
+            <td>
+              <span class="name">{{ a.nombre }}</span>
+              <span class="sub">{{ a.matricula }}</span>
+            </td>
+            <td>{{ a.carrera }}</td>
+            <td>{{ a.inscritoEn | date: 'dd/MM/yyyy' }}</td>
+            <td>
+              @if (a.asistencia === null) {
+                <span class="sub">Sin sesiones</span>
+              } @else {
+                <span [class.low]="enRiesgo(a)">{{ a.asistencia }} %</span>
+                @if (enRiesgo(a)) { <span class="tag tag--rose">En riesgo</span> }
+              }
+            </td>
+            <td>
+              @if (bajaPendiente() === a.id) {
+                <div class="confirm" role="group" [attr.aria-label]="'Confirmar baja de ' + a.nombre">
+                  <span class="sub">¿Dar de baja?</span>
+                  <button type="button" class="btn btn--sm" (click)="cancelarBaja()">Cancelar</button>
+                  <button type="button" class="btn btn--sm btn--dark" (click)="confirmarBaja()">Confirmar</button>
+                </div>
+              } @else {
+                <button
+                  type="button"
+                  class="btn btn--sm"
+                  (click)="pedirBaja(a.id)"
+                  [disabled]="cerrado()"
+                  [attr.aria-label]="'Dar de baja a ' + a.nombre"
+                >Dar de baja</button>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td [attr.colspan]="columns.length" class="empty" role="status">
+              @if (resumen().inscritos === 0) { Este grupo aún no tiene alumnos inscritos. } @else { Ningún alumno coincide con la búsqueda. }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <footer class="foot">
+      <span class="sub">Solo el administrador puede inscribir y dar de baja. Cada baja queda en el historial del alumno.</span>
+      <div class="foot__act">
+        <a class="btn" [routerLink]="rutaLista">Volver a grupos</a>
+      </div>
+    </footer>
+  </div>
+}

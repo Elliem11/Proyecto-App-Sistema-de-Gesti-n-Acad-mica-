@@ -21,11 +21,9 @@ const MENUS: Record<Role, MenuItem[]> = {
   ],
   admin: [
     { label: 'Inicio', icon: 'home', route: '/admin/inicio' },
-    { label: 'Usuarios', icon: 'users', route: '/admin/usuarios' },
-    { label: 'Roles y permisos', icon: 'lock', route: '/admin/roles' },
-    { label: 'Materias y periodos', icon: 'book', route: '/admin/materias' },
+    { label: 'Usuarios y permisos', icon: 'users', route: '/admin/usuarios' },
+    { label: 'Materias y periodos', icon: 'book', route: '/admin/materias-periodos' },
     { label: 'Grupos', icon: 'users', route: '/admin/grupos' },
-    { label: 'Inscripciones', icon: 'pen', route: '/admin/inscripciones' },
     { label: 'Reportes', icon: 'chart', route: '/admin/reportes' },
     { label: 'Bitácora', icon: 'file', route: '/admin/bitacora' },
     { label: 'Migración al Kárdex', icon: 'archive', route: '/admin/migracion-kardex' },

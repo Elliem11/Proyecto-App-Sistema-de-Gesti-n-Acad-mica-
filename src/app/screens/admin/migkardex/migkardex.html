@@ -1,1 +1,88 @@
-<p>migkardex works!</p>
+<header class="head">
+  <div class="head__text">
+    <p class="eyebrow">Administración · Kárdex</p>
+    <h1>Migración de Historial Académico</h1>
+    <p class="muted">Carga un archivo con las calificaciones anteriores para integrarlas al Kárdex institucional de los alumnos.</p>
+  </div>
+
+  <svg class="head__art" viewBox="0 0 280 150" aria-hidden="true">
+    <circle class="ring r1" cx="200" cy="75" r="68"/>
+    <circle class="ring r2" cx="200" cy="75" r="44"/>
+    <g class="float">
+      <rect x="160" y="50" width="80" height="50" rx="10" fill="#0c0c0e"/>
+      <path d="M185 70h30M185 82h20" stroke="#fbf9fd" stroke-width="3" stroke-linecap="round"/>
+    </g>
+  </svg>
+</header>
+
+@if (aviso(); as a) {
+  <div [class]="'notice notice--' + a.tipo" role="alert">{{ a.texto }}</div>
+}
+
+<!-- Tarjeta de Carga de Archivo -->
+<div class="card" style="margin-bottom: 2rem;">
+  <h3 class="sec" style="margin-top: 0;">Seleccionar archivo de migración</h3>
+  <p class="sub">Formatos permitidos: .csv, .xlsx (Máximo 10 MB según RNF-05). Debe contener: Matrícula, Materia, Periodo, Créditos, Calificación y Estatus[cite: 12].</p>
+
+  <div class="field">
+    <input
+      type="file"
+      id="archivoKardex"
+      class="sr-only"
+      (change)="onFileSelected($event)"
+      accept=".csv, .xlsx, .xls"
+    />
+    <label for="archivoKardex" class="drop">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <span><strong>Haz clic para seleccionar</strong> o arrastra tu archivo aquí</span>
+      <small>{{ archivoSeleccionado ? archivoSeleccionado.name : 'Ningún archivo seleccionado' }}</small>
+    </label>
+  </div>
+
+  @if (archivoSeleccionado) {
+    <div class="actions">
+      <button type="button" class="btn" (click)="cancelarArchivo()">Cancelar</button>
+      <button type="button" class="btn btn--dark" (click)="procesarMigracion()" [disabled]="cargando()">
+        {{ cargando() ? 'Validando e importando...' : 'Validar e importar datos' }}
+      </button>
+    </div>
+  }
+</div>
+
+<!-- Reporte de Resultados / Errores (CA2 de HU-30) -->
+@if (resultadoMigracion) {
+  <div class="card">
+    <h3 class="sec" style="margin-top: 0;">Reporte de Resultados de Migración</h3>
+    <div class="facts" style="margin-bottom: 1rem;">
+      <span class="tag tag--sage">Registros importados con éxito: {{ resultadoMigracion.exitosos }}</span>
+      @if (resultadoMigracion.errores.length > 0) {
+        <span class="tag tag--rose">Filas con error (rechazadas): {{ resultadoMigracion.errores.length }}</span>
+      }
+    </div>
+
+    @if (resultadoMigracion.errores.length > 0) {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Fila</th>
+              <th>Matrícula / Dato</th>
+              <th>Motivo del Rechazo</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (err of resultadoMigracion.errores; track err.fila) {
+              <tr>
+                <td><strong>Fila #{{ err.fila }}</strong></td>
+                <td>{{ err.dato }}</td>
+                <td><span class="error" style="margin:0;">{{ err.motivo }}</span></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="muted" style="color: var(--ok);">¡La validación y la importación concluyeron sin errores! Los registros ya forman parte del Kárdex de los alumnos[cite: 12].</p>
+    }
+  </div>
+}

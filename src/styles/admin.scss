@@ -1,0 +1,251 @@
+// ============================================================================
+//  ESTILOS COMPARTIDOS DEL ADMINISTRADOR (Optimizado y Corregido)
+// ============================================================================
+
+:host {
+--ink: #0c0c0e; --lav: #e4def0; --peach: #f4e3da; --sage: #dce7e1; --sky: #d3dcf2; --rose: #f6d5d5;
+--paper: #fbf9fd; --line: #e0dfea; --muted: #6b6b7b; --danger: #b3261e;
+--ok: #2f7d5a; --ok-ink: #1d5a3f; --bad-ink: #7a1410; --warn: #b7791f; --warn-ink: #7a4b12; --sky-ink: #2a3f7a;
+--serif: 'Fraunces', Georgia, serif; --sans: 'Instrument Sans', system-ui, sans-serif;
+display: block; font-family: var(--sans); color: var(--ink);
+padding-bottom: 2.5rem;
+}
+
+h1 { margin: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.12; letter-spacing: -0.01em; }
+.sec { margin: 1.5rem 0 1rem; font-family: var(--serif); font-weight: 500; font-size: 1.3rem; }
+.muted { margin: 0.35rem 0 0; color: var(--muted); }
+.eyebrow { margin: 0 0 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.sub { color: var(--muted); font-size: 12.5px; }
+.error { display: block; margin-top: 6px; font-size: 12px; color: var(--danger); }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+// Encabezado institucional con degradado
+.head {
+position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 280px); align-items: center; gap: 16px;
+margin-bottom: 1.5rem; padding: 28px 32px; border-radius: 24px; overflow: hidden;
+background:
+radial-gradient(60% 55% at 15% 10%, var(--sky), transparent 70%),
+radial-gradient(55% 60% at 90% 25%, var(--lav), transparent 70%),
+radial-gradient(60% 60% at 40% 110%, var(--peach), transparent 70%),
+var(--sage);
+box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+&__text { position: relative; z-index: 1; }
+&__art { position: relative; z-index: 1; width: 100%; height: auto; justify-self: end; max-width: 280px; }
+}
+
+// Avisos del sistema
+.notice {
+margin-bottom: 1.25rem; padding: 14px 18px; border-radius: 14px; font-weight: 600;
+&--ok { background: var(--sage); color: var(--ok-ink); }
+&--error { background: var(--rose); color: var(--bad-ink); }
+&--info { background: var(--sky); color: var(--sky-ink); }
+}
+
+// Botones sólidos con estilo institucional y separación adecuada (evita amontonamiento)
+.btn {
+display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+min-height: 42px; padding: 0 22px; border-radius: 12px;
+border: 1px solid transparent; background: var(--lav);
+font: inherit; font-size: 14px; font-weight: 600; line-height: 1;
+color: var(--ink); text-decoration: none; cursor: pointer; white-space: nowrap;
+box-shadow: 0 2px 6px rgba(12, 12, 14, 0.04);
+transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+
+&:hover:not(:disabled) {
+background: #d5cbe9;
+transform: translateY(-1px);
+box-shadow: 0 6px 14px rgba(12, 12, 14, 0.08);
+}
+&:active:not(:disabled) { transform: translateY(0); box-shadow: 0 2px 6px rgba(12, 12, 14, 0.04); }
+&:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+&:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+&--dark {
+background: var(--ink); color: var(--paper);
+&:hover:not(:disabled) { background: #26262c; }
+}
+&--rose {
+background: var(--rose); color: var(--bad-ink);
+&:hover:not(:disabled) { background: #f0bebe; }
+}
+&--sage {
+background: var(--sage); color: var(--ok-ink);
+&:hover:not(:disabled) { background: #c5dacf; }
+}
+&--sm { min-height: 34px; padding: 0 14px; font-size: 13px; border-radius: 10px; }
+}
+
+// Espaciado generoso para grupos de botones (soluciona que se vean amontonados)
+.btn-group { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin: 4px 0; }
+
+// Etiquetas institucionales
+.tag {
+display: inline-block; padding: 4px 12px; border-radius: 999px; background: var(--peach); font-size: 12px; font-weight: 600; white-space: nowrap;
+&--peach { background: var(--peach); }
+&--sage { background: var(--sage); }
+&--sky { background: var(--sky); }
+&--rose { background: var(--rose); }
+&--lav { background: var(--lav); }
+}
+
+@media (max-width: 860px) {
+.head { grid-template-columns: 1fr; &__art { justify-self: center; max-width: 220px; margin-top: -8px; } }
+}
+@media (max-width: 640px) {
+.head { padding: 22px 20px; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+// ---------- ILUSTRACIÓN ANIMADA ----------
+@mixin hero-art {
+.ring { fill: none; stroke: var(--ink); stroke-opacity: 0.18; stroke-dasharray: 3 9; stroke-linecap: round; transform-box: fill-box; transform-origin: center; }
+.r1 { animation: spin 60s linear infinite; }
+.r2 { animation: spin 90s linear infinite reverse; }
+.float { transform-box: fill-box; transform-origin: center; animation: float 6s ease-in-out infinite; &.b { animation-duration: 7.5s; animation-delay: -2s; } &.c { animation-duration: 5s; animation-delay: -3.5s; } }
+.dot { transform-box: fill-box; transform-origin: center; animation: pulse 3s ease-in-out infinite; &:nth-of-type(2n) { animation-delay: -1s; } &:nth-of-type(3n) { animation-delay: -2s; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes float { 50% { transform: translateY(-8px); } }
+@keyframes pulse { 50% { transform: scale(1.6); opacity: 0.4; } }
+}
+
+// ---------- FORMULARIOS Y ZONAS DE BÚSQUEDA / FILTROS ----------
+@mixin formulario {
+.card { display: grid; gap: 1.25rem; padding: 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 10px 24px rgba(12, 12, 14, 0.03); }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.field {
+display: grid; gap: 8px; align-content: start; border: 0; margin: 0; padding: 0; min-width: 0;
+label, legend, .label { padding: 0; font-size: 13px; font-weight: 600; color: var(--ink); }
+em { font-style: normal; font-weight: 500; color: var(--muted); }
+&__foot { display: flex; justify-content: space-between; gap: 8px; }
+}
+
+.input,
+input[type="text"],
+input[type="search"],
+select {
+width: 100%; height: 42px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; font: inherit; color: var(--ink);
+box-shadow: 0 2px 6px rgba(12, 12, 14, 0.02);
+&::placeholder { color: var(--muted); }
+&:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+}
+
+.input.ng-invalid.ng-touched,
+.input--bad,
+input.ng-invalid.ng-touched[type="text"],
+input.ng-invalid.ng-touched[type="search"],
+select.ng-invalid.ng-touched {
+border-color: var(--danger);
+}
+
+.input--area { height: auto; padding: 10px 12px; resize: vertical; line-height: 1.5; }
+.input--sm { height: 36px; font-size: 13.5px; }
+
+.search {
+display: block; width: 100%;
+input {
+width: 100%; height: 44px; padding: 0 18px; border: 1px solid var(--line); border-radius: 12px; background: #fff; font: inherit; color: var(--ink);
+box-shadow: 0 4px 12px rgba(12, 12, 14, 0.03);
+&::placeholder { color: var(--muted); }
+&:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+}
+}
+
+// Acciones con buen margen y separación para evitar amontonamiento de botones
+.actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 16px; border-top: 1px solid var(--line); padding-top: 1.25rem; margin-top: 0.75rem; }
+
+@media (max-width: 860px) {
+.grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+.card { padding: 18px; }
+}
+}
+
+// ---------- TABLAS DE ALTA DENSIDAD ----------
+@mixin tabla {
+.table-wrap { overflow-x: auto; background: var(--paper); border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 10px 24px rgba(12, 12, 14, 0.03); margin-top: 1rem; }
+table { width: 100%; min-width: 780px; border-collapse: collapse; }
+th, td { text-align: left; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { background: var(--sky); font-family: var(--serif); font-weight: 500; font-size: 0.95rem; white-space: nowrap; color: var(--sky-ink); }
+tr:last-child td { border-bottom: 0; }
+tbody tr:hover td { background: rgba(211, 220, 242, 0.2); }
+.name { font-weight: 600; }
+.empty { padding: 2.5rem 1rem; text-align: center; color: var(--muted); }
+
+.stack { display: grid; gap: 6px; justify-items: start; }
+.cell-main { display: block; font-weight: 600; line-height: 1.35; }
+.cell-sub { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.45; }
+
+@media (max-width: 640px) {
+th, td { padding: 0.85rem 1rem; }
+}
+}
+
+// ---------- MÓXIN ESPECÍFICO: GESTIÓN DE USUARIOS Y PERMISOS ----------
+@mixin gestion-usuarios {
+@include formulario;
+@include tabla;
+@include hero-art;
+
+.tools { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-bottom: 1.25rem; }
+}
+
+// ---------- MÓXIN ESPECÍFICO: MIGRACIÓN DE KÁRDEX (Corregido y estilizado) ----------
+@mixin migracion-kardex {
+@include formulario;
+@include tabla;
+@include hero-art;
+
+.head { margin-bottom: 1.25rem; padding: 26px 32px; }
+.card { gap: 1.25rem; margin-top: 1rem; padding: 24px 28px; }
+.card h1, .card .sec { margin: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem; }
+
+// Zona de carga estilizada y limpia para que el input de archivo luzca profesional
+.drop {
+position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+gap: 10px; padding: 32px 24px; border: 2px dashed #b8b3d0; border-radius: 16px;
+background: linear-gradient(180deg, rgba(228, 222, 240, 0.35), rgba(211, 220, 242, 0.25));
+box-shadow: 0 4px 14px rgba(12, 12, 14, 0.03); text-align: center; cursor: pointer;
+transition: all 0.2s ease;
+
+strong { font-size: 15px; color: var(--ink); }
+small { color: var(--muted); font-size: 13.5px; }
+
+&:hover {
+border-color: var(--ink);
+background: linear-gradient(180deg, rgba(228, 222, 240, 0.6), rgba(211, 220, 242, 0.4));
+transform: translateY(-1px);
+box-shadow: 0 6px 16px rgba(12, 12, 14, 0.06);
+}
+}
+
+// Estilo robusto para el botón selector de archivos nativo
+input[type='file'] {
+width: 100%; margin-top: 10px; font: inherit; font-size: 14px; color: var(--muted); cursor: pointer;
+&::file-selector-button {
+font: inherit; font-size: 14px; font-weight: 600; margin-right: 14px; padding: 0 22px; height: 42px;
+border: 1px solid var(--line); border-radius: 10px; background: var(--paper); color: var(--ink);
+cursor: pointer; box-shadow: 0 2px 5px rgba(12, 12, 14, 0.04);
+transition: all 0.15s ease;
+}
+&::file-selector-button:hover { background: var(--lav); border-color: #cfc9e2; }
+}
+
+.card .actions { margin-top: 0.5rem; padding-top: 1rem; }
+.btn-group + .card, .card + .table-wrap { margin-top: 1rem; }
+
+@media (max-width: 640px) {
+.head { padding: 20px 18px; }
+.drop { padding: 22px 14px; }
+}
+}
+
+// ---------- MÓXIN ESPECÍFICO: REPORTES ACADÉMICOS ----------
+@mixin reportes-admin {
+@include formulario;
+@include tabla;
+@include hero-art;
+
+.grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

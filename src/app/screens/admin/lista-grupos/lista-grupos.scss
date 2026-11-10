@@ -1,0 +1,10 @@
+@use '../../../../styles/admin' as *;
+
+// Activa formularios modales y tablas de alta densidad para gestión de cuentas
+@include formulario;
+@include tabla;
+
+:host {
+  display: block;
+  padding: 24px;
+}
