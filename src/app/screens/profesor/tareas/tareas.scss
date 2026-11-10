@@ -1,0 +1,5 @@
+@use '../../../../styles/profesor';
+@include profesor.tabla;
+@include profesor.formulario;   // aquí viven .input y .field
+@include profesor.hero-art;
+@include profesor.entregas;

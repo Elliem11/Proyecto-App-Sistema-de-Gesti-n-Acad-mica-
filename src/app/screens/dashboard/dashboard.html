@@ -1,6 +1,6 @@
 <section class="hero">
   <div class="hero__text">
-    <p class="eyebrow">Panel del alumno</p>
+    <p class="eyebrow">Panel {{ user()?.role === 'profesor' ? 'del profesor' : user()?.role === 'admin' ? 'administrativo' : 'del alumno' }}</p>
     <h1>Hola, {{ user()?.nombre }}</h1>
     <p class="muted">Resumen de tu cuenta</p>
   </div>
@@ -98,6 +98,18 @@
             @case ('tareas') {
               <rect x="6" y="4" width="12" height="16" rx="2"/>
               <path d="M9 9h6M9 13h6M9 17h3"/>
+            }
+            @case ('cursos') {
+              <path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/>
+              <path d="M4 5v16M8 7h7M8 11h7"/>
+            }
+            @case ('alumnos') {
+              <circle cx="9" cy="8" r="3.5"/>
+              <path d="M3 20c1-3.5 3.2-5 6-5s5 1.5 6 5M16 5a3.5 3.5 0 0 1 0 7M18 15c1.8.6 3 2.4 3 5"/>
+            }
+            @case ('nueva') {
+              <path d="M4 20l4-1 11-11-3-3L5 16z"/>
+              <path d="M14 6l3 3"/>
             }
             @case ('calificaciones') {
               <path d="M2 9l10-5 10 5-10 5z"/>

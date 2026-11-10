@@ -9,7 +9,7 @@
 
   <nav aria-label="Menú principal">
     @for (item of menu(); track item.route) {
-      <a [routerLink]="item.route" routerLinkActive="active" (click)="navigated.emit()">
+      <a [routerLink]="item.route" routerLinkActive="active" (click)="navigated.emit()" [routerLinkActiveOptions]="{exact: true}">
         <span class="icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             @switch (item.icon) {
@@ -80,6 +80,7 @@
           </svg>
         </span>
         <span class="label">{{ item.label }}</span>
+
       </a>
     }
   </nav>

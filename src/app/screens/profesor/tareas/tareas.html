@@ -1,0 +1,173 @@
+<header class="head">
+  <div class="head__text">
+    <p class="eyebrow">{{ curso.nombre }} · Grupo {{ curso.grupo }}</p>
+    <h1>Entregas de tareas</h1>
+    <p class="muted">Revisa lo que entregó cada alumno, califica y deja retroalimentación</p>
+  </div>
+
+  <svg class="head__art" viewBox="0 0 280 150" aria-hidden="true">
+    <circle class="ring r1" cx="200" cy="75" r="68"/>
+    <circle class="ring r2" cx="200" cy="75" r="44"/>
+
+    <!-- bandeja de entrega -->
+    <g class="float">
+      <circle cx="200" cy="75" r="30" fill="#0c0c0e"/>
+      <path d="M186 74l5-10h18l5 10v10a3 3 0 0 1-3 3h-22a3 3 0 0 1-3-3z" fill="#fbf9fd"/>
+      <path d="M186 74h9l2 4h6l2-4h9" fill="none" stroke="#0c0c0e" stroke-width="2" stroke-linejoin="round"/>
+    </g>
+
+    <!-- hojas entregadas -->
+    <g class="float b">
+      <rect x="30" y="38" width="96" height="62" rx="12" fill="#fbf9fd" opacity=".6"/>
+      <rect x="18" y="30" width="104" height="70" rx="14" fill="#fbf9fd" opacity=".95"/>
+      <circle cx="36" cy="48" r="6" fill="#dce7e1"/>
+      <rect x="48" y="45" width="56" height="6" rx="3" fill="#0c0c0e" opacity=".5"/>
+      <circle cx="36" cy="66" r="6" fill="#f4e3da"/>
+      <rect x="48" y="63" width="44" height="6" rx="3" fill="#0c0c0e" opacity=".25"/>
+      <circle cx="36" cy="84" r="6" fill="#f6d5d5"/>
+      <rect x="48" y="81" width="52" height="6" rx="3" fill="#0c0c0e" opacity=".25"/>
+    </g>
+
+    <g class="float c">
+      <rect x="140" y="112" width="60" height="22" rx="8" fill="#dce7e1"/>
+      <rect x="208" y="112" width="48" height="22" rx="8" fill="#d3dcf2"/>
+    </g>
+
+    <circle class="dot" cx="20" cy="18" r="4" fill="#0c0c0e"/>
+    <circle class="dot" cx="262" cy="26" r="3" fill="#0c0c0e" opacity=".5"/>
+    <circle class="dot" cx="140" cy="10" r="3" fill="#0c0c0e"/>
+    <circle class="dot" cx="268" cy="130" r="4" fill="#0c0c0e" opacity=".5"/>
+  </svg>
+</header>
+
+<div class="bar">
+  <div class="field">
+    <label for="tarea">Tarea</label>
+    <select id="tarea" class="input" [formControl]="tareaCtrl" (change)="cambiarTarea()">
+      @for (t of tareas; track t.id) {
+        <option [ngValue]="t.id">{{ t.titulo }}</option>
+      }
+    </select>
+  </div>
+
+  <fieldset class="field">
+    <legend>Mostrar</legend>
+    <div class="seg">
+      @for (f of filtros; track f.valor) {
+        <label><input type="radio" [formControl]="filtroCtrl" [value]="f.valor" /><span>{{ f.texto }}</span></label>
+      }
+    </div>
+  </fieldset>
+</div>
+
+<ul class="facts" aria-label="Datos de la tarea">
+  <li class="tag tag--sky">Vence: {{ tarea().vence | date: 'dd/MM/yyyy HH:mm' }}</li>
+  <li class="tag" [class.tag--sage]="tarea().tardias">{{ tarea().tardias ? 'Acepta entregas tardías' : 'Cierra al vencer' }}</li>
+  <li class="tag" [class.tag--rose]="cerrada()">{{ cerrada() ? 'Cerrada' : 'Vigente' }}</li>
+  <li class="tag tag--lav">Se asocia a: {{ tarea().evaluacion }} · {{ tarea().peso }} %</li>
+  <li class="sub">
+    {{ resumen().entregadas }} de {{ resumen().total }} entregadas
+    @if (resumen().tardias > 0) { ({{ resumen().tardias }} extemporáneas) }
+    · {{ resumen().sin }} sin entregar · {{ resumen().calificadas }} calificadas
+  </li>
+</ul>
+
+@if (aviso(); as a) {
+  <div [class]="'notice notice--' + a.tipo" [attr.role]="a.tipo === 'error' ? 'alert' : 'status'">{{ a.texto }}</div>
+}
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        @for (c of columns; track c) {
+          <th scope="col">{{ c }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (f of visibles(); track f.alumno.id) {
+        @let g = f.grupo;
+        @let e = f.entrega;
+        <tr [formGroup]="g">
+          <td>
+            <span class="name">{{ f.alumno.nombre }}</span>
+            <span class="sub">{{ f.alumno.matricula }}</span>
+          </td>
+          <td>
+            @switch (f.estado) {
+              @case ('a-tiempo') { <span class="tag tag--sage">A tiempo</span> }
+              @case ('tardia') { <span class="tag">Extemporánea</span> }
+              @default { <span class="tag tag--rose">Sin entregar</span> }
+            }
+            @if (g.dirty) { <span class="tag tag--sky">Sin guardar</span> }
+          </td>
+          <td>
+            @if (e.entregadoEn) { {{ e.entregadoEn | date: 'dd/MM/yyyy HH:mm' }} } @else { <span class="sub">—</span> }
+          </td>
+          <td>
+            @if (e.tipo === 'archivo') {
+              <button type="button" class="file" (click)="descargar(e.nombre!)" [attr.aria-label]="'Descargar ' + e.nombre">
+                {{ e.nombre }} <span class="sub">{{ formatoTamano(e.tamano!) }}</span>
+              </button>
+            } @else if (e.tipo === 'enlace') {
+              <a class="file" [href]="e.url" target="_blank" rel="noopener noreferrer">Abrir enlace</a>
+            } @else {
+              <span class="sub">—</span>
+            }
+          </td>
+          <td>
+            <input
+              type="number"
+              class="input input--sm input--nota"
+              formControlName="nota"
+              [min]="notaMin"
+              [max]="notaMax"
+              step="0.1"
+              inputmode="decimal"
+              [attr.aria-label]="'Calificación de ' + f.alumno.nombre"
+              [attr.title]="e.entregadoEn ? null : 'Sin entrega: no se puede calificar'"
+            />
+            @if (g.controls.nota.touched && g.controls.nota.invalid) {
+              <small class="error">
+                @if (g.controls.nota.hasError('min') || g.controls.nota.hasError('max')) { Fuera de escala ({{ notaMin }} a {{ notaMax }}). }
+                @else { Máximo 2 decimales. }
+              </small>
+            }
+          </td>
+          <td>
+            <textarea
+              class="input input--area input--com"
+              formControlName="comentario"
+              rows="2"
+              maxlength="500"
+              placeholder="{{ e.entregadoEn ? 'Aciertos y áreas de mejora' : '' }}"
+              [attr.aria-label]="'Retroalimentación para ' + f.alumno.nombre"
+            ></textarea>
+            @if (g.controls.comentario.touched && g.hasError('notaFaltante')) {
+              <small class="error">Asigna una calificación para guardar el comentario.</small>
+            }
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td [attr.colspan]="columns.length" class="empty" role="status">
+            @if (resumen().total === 0) { Este grupo aún no tiene alumnos inscritos. } @else { No hay alumnos en este filtro. }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <footer class="foot">
+    <span class="sub">
+      {{ sinGuardar() > 0 ? sinGuardar() + ' con cambios sin guardar' : 'Sin cambios pendientes' }} · Quien no entregó no se puede calificar.
+    </span>
+    <div class="foot__act">
+      <button type="button" class="btn" (click)="descartar()" [disabled]="guardando() || sinGuardar() === 0">Descartar cambios</button>
+      <button type="button" class="btn btn--dark" (click)="guardar()" [disabled]="guardando() || sinGuardar() === 0">
+        {{ guardando() ? 'Guardando…' : 'Guardar calificaciones' }}
+      </button>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,4 @@
+@use '../../../../styles/profesor';
+@include profesor.tabla;       // si la vista tiene tabla
+@include profesor.formulario;  // si tiene formulario
+@include profesor.hero-art;    // si el encabezado lleva la ilustración

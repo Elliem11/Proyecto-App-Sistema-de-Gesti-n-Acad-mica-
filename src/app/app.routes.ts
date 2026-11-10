@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, guestGuard, homeRedirectGuard } from './guards/auth.guard';
+import { cursoGuard } from './guards/curso.guard';
 import { roleGuard } from './guards/role.guard';
 import { MainLayout } from './partials/main-layout/main-layout';
 
@@ -32,23 +33,29 @@ export const routes: Routes = [
         ],
 
       },
-
-
-
       {
-        path: 'profesor', canActivate: [roleGuard], data: { role: 'profesor' },
+        path: 'profesor',
+        canActivate: [roleGuard],
+        canActivateChild: [roleGuard],
+        data: { role: 'profesor' },
         children: [
           { path: 'inicio', loadComponent: dashboard },
-        ],
-      },
-      {
-        path: 'admin', canActivate: [roleGuard], data: { role: 'admin' },
-        children: [
-          { path: 'inicio', loadComponent: dashboard },
+          { path: 'cursos', loadComponent: () => import('./screens/profesor/cursos/cursos').then(m => m.MisCursos) },
+          {
+            path: 'cursos/:id',
+            canActivate: [cursoGuard],
+            children: [
+              { path: '', pathMatch: 'full', redirectTo: 'asistencias' },
+              { path: 'alumnos', loadComponent: () => import('./screens/profesor/lista-alumnos/lista-alumnos').then(m => m.ListaAlumnos) },
+              { path: 'asistencias', loadComponent: () => import('./screens/profesor/asistencia-a/asistencia-a').then(m => m.PaseLista) },
+              { path: 'tareas/nueva', loadComponent: () => import('./screens/profesor/crear-tarea/crear-tarea').then(m => m.CrearTarea) },
+              { path: 'tareas', loadComponent: () => import('./screens/profesor/tareas/tareas').then(m => m.TareasEntregas) },
+            ],
+          },
         ],
       },
     ],
   },
 
   { path: '**', redirectTo: '' },
-  ];
+];

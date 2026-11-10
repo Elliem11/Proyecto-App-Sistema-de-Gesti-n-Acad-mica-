@@ -16,10 +16,6 @@ const MENUS: Record<Role, MenuItem[]> = {
   profesor: [
     { label: 'Inicio', icon: 'home', route: '/profesor/inicio' },
     { label: 'Mis cursos', icon: 'book', route: '/profesor/cursos' },
-    { label: 'Asistencia', icon: 'check', route: '/profesor/asistencia' },
-    { label: 'Tareas', icon: 'clipboard', route: '/profesor/tareas' },
-    { label: 'Calificaciones', icon: 'cap', route: '/profesor/calificaciones' },
-    { label: 'Perfil', icon: 'user', route: '/profesor/perfil' },
   ],
   admin: [
     { label: 'Inicio', icon: 'home', route: '/admin/inicio' },
@@ -42,8 +38,17 @@ const INFO: Record<Role, RoleInfo> = {
 
 @Injectable({ providedIn: 'root' })
 export class MenuService {
-  getMenu(role: Role): MenuItem[] {
-    return MENUS[role];
+  getMenu(role: Role, cursoId?: number): MenuItem[] {
+    const menu = MENUS[role];
+    if (role !== 'profesor' || cursoId === undefined) return menu;
+
+    return [
+      ...menu,
+      { label: 'Alumnos', icon: 'users', route: `/profesor/cursos/${cursoId}/alumnos` },
+      { label: 'Asistencias', icon: 'check', route: `/profesor/cursos/${cursoId}/asistencias` },
+      { label: 'Tareas', icon: 'clipboard', route: `/profesor/cursos/${cursoId}/tareas` },
+      { label: 'Crear tarea', icon: 'pen', route: `/profesor/cursos/${cursoId}/tareas/nueva` },
+    ];
   }
   getInfo(role: Role): RoleInfo {
     return INFO[role];
